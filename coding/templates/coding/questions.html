@@ -1,0 +1,80 @@
+{% extends 'coding/base.html' %}
+
+{% block navbar %}
+{% include 'coding/header.html' %}
+
+{% endblock %}
+
+
+{% block style %}
+.inbox-option{
+width:100%;
+display:
+
+
+}
+.inbox-option button{
+    width:100%;
+    display:inline;
+    margin-bottom:20px;
+
+}
+{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="row mt-5">
+        <div class="col-12 pl-5 pr-5">
+            {% for ques in question %}
+            <div class="inbox" id="inbox{{ques.question_id}}">
+                <div class="inbox-question">
+                    <h5>
+                        Question {{forloop.counter}}:
+                        {{ques.question|safe|linebreaks}} 
+                    </h5>
+                </div>
+                <div class="inbox-option">
+                    <div class="row">
+
+                        <div class="col-12 col-md-6">
+                            <button onclick="validate('{{ques.question_id}}','A','{{forloop.counter}}')" id="sol{{forloop.counter}}A" class="btn btn-outline-secondary">{{ques.A}}</button>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <button onclick="validate('{{ques.question_id}}','B','{{forloop.counter}}')" id="sol{{forloop.counter}}B"  class="btn btn-outline-secondary">{{ques.B}}</button>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <button onclick="validate('{{ques.question_id}}','C','{{forloop.counter}}')" id="sol{{forloop.counter}}C"  class="btn btn-outline-secondary">{{ques.C}}</button>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <button onclick="validate('{{ques.question_id}}','D','{{forloop.counter}}')" id="sol{{forloop.counter}}D" class="btn btn-outline-secondary">{{ques.D}}</button>
+                         </div>
+                    </div>
+                   
+                   
+                </div>
+                <div class="inbox-solution mb-3">
+                    <div style="display: flex; justify-content: flex-end;">
+                        <p>
+                        <button class="btn btn-outline-warning rounded-pill" type="button" data-toggle="collapse" data-target="#collapseExample{{forloop.counter}}" aria-expanded="false" aria-controls="collapseExample">
+                            Solution
+                          </button>
+                        </p>
+                    
+                        
+                    </div>
+                    <div class="collapse" id="collapseExample{{forloop.counter}}">
+                        <div class="card card-body">
+                        <p>
+                            Solution : {{ques.correct}}
+                        </p>
+                        <p>
+                          {{ques.explanation}}
+                        </p>
+                        </div>
+                      </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'coding/base.html' %}
+{% load crispy_forms_tags %}
+{% block navbar %}
+
+{% include 'coding/header.html' %}
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-md-9 mt-5">
+            {% for data in listing %}
+            <div class="">
+                <h6 style="font-size: 13px;" class="card-subtitle mb-2 text-muted">{{data.desc}}</h6>
+                          <p style="font-size: 15px;" class="card-text">{{data.heading}}</p>
+                          <p style="font-size: 10px; margin-top: -10px;" class="card-text">{{data.time}}, {{data.date}}</p>
+                          <a class="btn btn-sm btn-outline-warning" style="font-size: 13px;" href="{{data.link}}" class="card-link">Visit  <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+            </div>
+            <hr>
+            {% endfor %}
+        </div>
+       
+    </div>
+
+</div>
+{% endblock %}

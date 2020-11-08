@@ -1,0 +1,290 @@
+{% extends "coding/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block navbar %}
+            {% include 'coding/header.html' %}
+        {% endblock %}
+{% block style %}
+.incenter-image{
+
+    display:flex;
+    justify-content:center;
+    
+}
+.inbox{
+    padding:30px;
+    
+}
+
+.incenter-image{
+    padding:30px;
+}
+
+
+.incenter-image-subpart{
+width:80vw;
+height:auto;
+border-radius:8px;
+}
+
+
+.incenter-heading{
+    display:flex;
+    justify-content:center;
+    padding:0px;
+}
+
+.incenter-heading-subpart{
+
+font-size:30px;
+font-weight:600;
+line-height:30px;
+padding-bottom:20px;
+display:flex;
+    justify-content:center;
+
+}
+.incenter-heading-functions{
+    display:flex;
+    justify-content:space-between;
+}
+.incenter-heading-functions-subparts a{
+width:auto;
+
+
+}
+.incenter-heading-functions-subparts{
+
+
+}
+.incenter-content{
+    margin-top:20px;
+}
+.pane-img{
+    width:80px;
+    border-radius:100%;
+    height:80px;
+}
+
+{% endblock %}
+
+
+{% block body %}
+<div class="container">
+
+    <div class="row">
+        <div class="col-12">
+
+            <div class="inbox">
+                <div class="incenter-image">
+                    <img class="incenter-image-subpart" src="/media/{{information.image}}">
+                </div>
+
+                <div class="incenter-heading">
+                    <div class="incenter-heading-subpart">
+                        {{information.title|safe|linebreaks}}
+                    </div>
+                </div>
+
+                <div class="incenter-heading-functions">
+                    <div class="incenter-heading-functions-subparts">
+                        <a>
+                            By {{information.author}}
+                        </a>
+                        <a>
+                            {{information.time}}
+                        </a>
+                        <a>
+                            {{information.date_Publish}}
+                        </a> 
+                        
+                    </div>
+                    <div class="incenter-heading-functions-subparts">
+                        <a onclick="like('{{information.title}}','0')" id="like0" style="{% if request.user in information.liked.all %}color:red;{%endif%}">
+                            <i class="fa fa-thumbs-up"></i>
+                            {{information.liked.all.count}}
+                        </a> 
+                        <a onclick="dislike('{{information.title}}','0')" id="dislike0" style="{% if request.user in information.disliked.all %}color:red;{%endif%}">
+                            <i class="fa fa-thumbs-down"></i>
+                            {{information.disliked.all.count}}
+                        </a>
+                        <a href="#comment">
+                            <i class="fa fa-comments-o" aria-hidden="true"></i>
+                            {{information.my_comments.count}}
+                          
+                        </a>
+                        <a onclick="bookmarks('{{information.title}}','0')" id="book0" style="color: {% if information in request.user.profile.favourities.all %} red; {%else %} {% endif %}"> <i class="fa fa-bookmark p-1 my-1 mr-3  myhover" ></i></a>
+                       
+                    </div>
+                </div>
+
+                <div class="incenter-content">
+
+                    <div class="incenter-content-subpart">
+                        {{information.content|safe|linebreaks}}
+                            
+                    </div>
+                </div>
+               <hr>
+               <div class="incenter-pane">
+                   <div class="row">
+                       <div class="col-12 col-xl-6 pt-2">
+                            <div class="incenter-pane-prev " style="display: flex; justify-content: flex-start; align-items: center;">
+                                <img class="pane-img" src="https://awcdn1.ahmad.works/writing/wp-content/uploads/2015/05/cheerful-loving-couple-bakers-drinking-coffee-PCAVA6B-2.jpg">
+                                <div class="pane-data-prev ml-3">
+                                    <div>
+                                        <h6>Previous:</h6>
+                                       <h6>{{prev.title}}</h6>
+                                    </div>
+                                  
+
+                                </div>
+                            </div>
+                       </div>
+
+                       <div class="col-12 col-xl-6 pt-2">
+                           <div class="incenter-pane-next" style="display: flex; justify-content: flex-end; align-items: center;">
+                            <div class="pane-data-prev mr-3" style="text-align: right;">
+                                <div>
+                                    <h6>Next:</h6>
+                                   <h6>{{next.title}}</h6>
+                                </div>
+                              
+
+                            </div>
+                               <img class="pane-img" src="https://awcdn1.ahmad.works/writing/wp-content/uploads/2015/05/cheerful-loving-couple-bakers-drinking-coffee-PCAVA6B-2.jpg">
+
+                           </div>
+                    </div>
+                   </div>
+               </div>
+               <hr>
+
+               <div class="row" >
+
+                <div class="col-12 mt-4">
+                    <h5>Related Posts:</h5>
+                </div>
+
+                <div class="col-12 col-md-4 mt-4" >
+                    <div  style="width:auto;">
+                        <img class="card-img-top rounded" src="https://awcdn1.ahmad.works/writing/wp-content/uploads/2015/05/cheerful-loving-couple-bakers-drinking-coffee-PCAVA6B-2.jpg" alt="Card image cap">
+                        <div class="card-body">
+                          <h5 class="card-title">Card title</h5>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-12 col-md-4 mt-4" >
+
+                      <div  style="width: auto;">
+                        <img class="card-img-top rounded" src="https://awcdn1.ahmad.works/writing/wp-content/uploads/2015/05/cheerful-loving-couple-bakers-drinking-coffee-PCAVA6B-2.jpg" alt="Card image cap">
+                        <div class="card-body">
+                          <h5 class="card-title">Card title</h5>
+                        </div>
+                      </div>
+                </div>
+                <div class="col-12 col-md-4 mt-4" >
+                      <div  style="width: auto">
+                        <img class="card-img-top rounded" src="https://awcdn1.ahmad.works/writing/wp-content/uploads/2015/05/cheerful-loving-couple-bakers-drinking-coffee-PCAVA6B-2.jpg" alt="Card image cap">
+                        <div class="card-body">
+                          <h5 class="card-title">Card title</h5>
+                        </div>
+                      </div>
+                </div>
+               </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+    
+            <!-- Dropdown Card Example -->
+            <div class="  mb-4">
+                <div class="pt-5 mt-5" id="comment">
+                    <h1 class="ml-5">Comments</h1>
+                    <p class="ml-5">{{comments.count}} Comment{% if comments.count >= 2 %}s{% endif %}</p>
+                    <br>
+                     <ul class="comment-list ml-5">
+                     
+                       {% for comment in comments %}
+                       
+                       <li class="comment">
+                         
+                         <div class="comment-body">
+                           
+                           <h3>{{comment.name}}</h3>
+                           <div class="meta mb-3">{{comment.created}}</div>
+                           <p>{{comment.body|linebreaks}}</p>
+                         
+                           <p><a onclick="document.getElementById('reply_content{{forloop.counter}}').style.display='block';  " class="reply btn btn-primary" style="color:rgb(0,0,0)">Reply</a></p>
+                           <div id="reply_content{{forloop.counter}}" style="padding:40px; background-color: #F8F9FA; display: none;">
+                             <div style="display: flex; justify-content: flex-end;">
+                               <a onclick="document.getElementById('reply_content{{forloop.counter}}').style.display='none'; "><span class="fa fa-close"></span></a>
+                             </div>
+                             <form action="" class="p-5 bg-light form_class" method = 'POST'>
+                               {% csrf_token %}
+                               <input type="hidden" name="parent_id" value='{{comment.id}}'>
+                              {{form|crispy}}
+                             <div class="form-group">
+                               <input type="submit" style="font-size: 20px; color:black;" value="Reply" class="btn py-3 px-4 btn-primary">
+                             </div>
+             
+                           </form>
+                           </div>
+                        
+                         </div>
+                         
+                         <ul class="children">
+                         
+                           {% for reply in comment.children.all %}
+                           <li class="comment">
+                             
+                             <div class="comment-body">
+                               <h3>{{reply.name}}</h3>
+                               <div class="meta mb-3">{{reply.created}}</div>
+                               <p>{{reply.body}}</p>
+                               
+                             </div>
+         
+         
+         
+                             {% endfor%}
+                           </li>
+                        
+                         </ul>
+                       </li>
+                       {% endfor %}
+         
+         
+                      
+         
+                  
+                       
+                       
+                     </ul>
+                     
+         
+                     <!-- END comment-list -->
+                  
+                     <div class="comment-form-wrap pt-5">
+                      
+                       <form action="" class="p-5 bg-light form_class" method = 'POST'>
+                           {% csrf_token %}
+                          {{form|crispy}}
+                         <div class="form-group">
+                           <input type="submit" style="font-size: 20px; color:black;" value="Post Comment" class="btn py-3 px-4 btn-primary">
+                         </div>
+         
+                       </form>
+                     </div>
+                  
+                
+                   </div>
+            </div>
+        </div>
+    
+      </div>
+</div>
+{% endblock %}

@@ -1,0 +1,108 @@
+{% extends 'coding/base.html' %}
+
+{% block navbar %}
+{% include 'coding/header.html' %}
+{% endblock %}
+
+{% block style %}
+.card{
+    height:130px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-12 mt-3" style="display: flex; justify-content: flex-end;">
+            <div>
+                <a href = "{% url 'aptitude_contribute' %}" class="btn btn-outline-warning rounded-pill"> Contribute</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 col-md-6 col-xl-3 mt-5">
+            <a href="{% url 'quants' %}" >
+            <div class="card">
+                Quants
+            </div>
+            </a>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3 mt-5">
+           
+            <a href="{% url 'verbal' %}" >
+                 <div class="card">
+                Verbal
+            </div>
+            </a>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3 mt-5">
+            <a href="{% url 'logical' %}" >
+            <div class="card">
+                Logical
+            </div>
+            </a>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3 mt-5">
+            <a href="{% url 'interpretation' %}" >
+            <div class="card">
+                Data Interpretation
+            </div>
+            </a>
+        </div>
+        <div class="col-12 col-md-6 col-xl-3 mt-5">
+            <div class="card">
+                C Language
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3 mt-5">
+            <div class="card">
+                CPP Language
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3 mt-5">
+            <div class="card">
+                PseudoCode
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3 mt-5">
+            <div class="card">
+                Operating System
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3 mt-5">
+            <div class="card">
+                Networking
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-xl-3 mt-5">
+            <div class="card">
+                DBMS
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-xl-3 mt-5">
+            <div class="card">
+                SDLC
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6 col-xl-3 mt-5">
+            <div class="card">
+                Company Wise
+            </div>
+        </div>
+
+        
+    </div>
+</div>
+{% endblock %}

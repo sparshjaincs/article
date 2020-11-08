@@ -1,0 +1,23 @@
+{% extends 'coding/base.html' %}
+
+{% block navbar %}
+{% include 'coding/header.html' %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="mt-5">
+                <form method = 'POST' action="" style="display: flex; justify-content: space-between;">
+                    {% csrf_token %}
+                    <input style="width:50%;" type="text" class="form-control bg-light border-0 small mr-2" name="job" placeholder="Job Title, keywords, or company" aria-label="Search" aria-describedby="basic-addon2" id="myinput">
+                    <input type="text" style="width:50%;" class="form-control bg-light border-0 small mr-2" name="location" placeholder="City, State, or pin code" aria-label="Search" aria-describedby="basic-addon2" id="myinput2">
+                    <button type="submit" class="btn btn-sm btn-outline-warning">Search</button>
+                      
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

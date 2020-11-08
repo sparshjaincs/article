@@ -1,0 +1,407 @@
+{% extends 'coding/base.html' %}
+{% load shortcut %}
+{% block navbar %}
+            {% include 'coding/header.html' %}
+        {% endblock %}
+{% block style %}
+.incenter-image{
+
+    display:flex;
+    justify-content:center;
+    
+}
+.inbox{
+    padding:30px;
+    
+}
+
+.incenter-image{
+    padding-bottom:30px;    
+}
+
+
+.incenter-image-subpart{
+width:100%;
+height:auto;
+border-radius:8px;
+}
+
+
+.incenter-heading{
+    display:flex;
+    justify-content:center;
+    padding:0px;
+}
+
+.incenter-heading-subpart{
+
+font-size:30px;
+font-weight:600;
+line-height:30px;
+padding-bottom:20px;
+display:flex;
+    justify-content:center;
+
+}
+.incenter-heading-functions{
+    display:flex;
+    justify-content:space-between;
+}
+.incenter-heading-functions-subparts a{
+width:auto;
+
+
+}
+.incenter-heading-functions-subparts{
+
+
+}
+.incenter-content{
+    margin-top:20px;
+}
+
+.tabbing{
+    width:200px;
+    text-align:left;
+    padding:3px;
+    
+}
+
+.categories{
+    height:400px;
+    overflow-y:scroll;
+}
+{% endblock %}
+
+{% block script %}
+<script>
+    function myFunction(){
+      var search_val = document.getElementById('myinput').value.toLowerCase();
+      var data = document.getElementById('myTable');
+      var data_part = data.getElementsByClassName('myclass');
+      var tag_part = data.getElementsByClassName('mytag');
+      
+      for(i=0;i<tag_part.length;i++){
+        txtvalue = data_part[i].textContent || data_part[i].innerText;
+        
+        if(txtvalue.toLowerCase().indexOf(search_val) > -1){
+          tag_part[i].style.display="inline";
+          tag_part[i].style.justify="left";
+          
+        }
+        else{
+          tag_part[i].style.display="none";
+        }
+      }
+      
+    }
+</script>
+{% endblock %}
+{% block body %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 mt-3 pr-3 " style="display: flex; justify-content: flex-end;" >
+            <div>
+               
+                    <div class="input-group mr-4">
+                      <input type="text" class="form-control bg-light border-0 small mr-2" onkeyup="myFunction()" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" id="myinput">
+                      
+                    </div>
+               
+            </div>
+            <a href = "{% url 'discussion' %}" class="btn btn-outline-warning mr-2"> Ask and Anwser</a>
+            <a href = "{% url 'create_post' %}" class="btn btn-outline-warning"> Create Post</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-xl-3">
+
+            <div class="row">
+                <div class="col-12 d-none d-md-block mt-5">
+                    <div style="display: flex; flex-direction: column; align-items: center;" >
+                    
+                        <a class="tabbing" href="{% url 'aptitude' %}">Aptitude</a>
+                        <a class="tabbing" href="{% url 'courses' %}">Courses</a>
+                        <a class="tabbing" href="{% url 'coding' %}">Coding</a>
+                        <a class="tabbing">Job Portal</a>
+                      
+                        <a class="tabbing">Job Preparation</a>
+                        <a class="tabbing">Interview Experience</a>
+                        
+                        <!--<a  class="tabbing btn btn-outline-warning rounded-pill" href="#">More</a>-->
+                    </div>
+                </div>
+
+            </div>
+            <div class="row mt-5">
+                
+                <div class="col-12 d-none d-md-block mt-5">
+                   <h5> <center>Popular Hashtags</center></h5>
+
+                   <br>
+                    <div class="categories" style="display: flex; flex-direction: column; align-items: center;" >
+
+                        <a class ="tabbing" href="/hashtags/Discuss/">Discuss</a>
+                        <a class="tabbing" href="/hashtags/Maths/">Maths</a>
+                        <a class="tabbing" href="/hashtags/Coding/">Coding</a>
+                        <a class="tabbing" href="/hashtags/Aptitude/">Aptitude</a>
+                        <a class="tabbing" href="/hashtags/Jobs/">Jobs</a>
+                        <a class="tabbing" href="/hashtags/Interview_Experience/">Interview Experience</a>
+                        <a class="tabbing" href="/hashtags/Formulas/">Formulas</a>
+                        <a class="tabbing" href="/hashtags/Tricks/"> Tricks</a>
+                        <a class="tabbing" href="/hashtags/Python/" >Python</a>
+                        <a class="tabbing" href="/hashtags/Mock_Tests/">Mock Test</a>
+                        <a class="tabbing" href="/hashtags/Technology/" >Technology</a>
+                    
+                        
+                        
+                        <!--<a  class="tabbing btn btn-outline-warning rounded-pill" href="#">More</a>-->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        
+        <div class="col-12 col-xl-6 " id="myTable">
+            <h3 class="ml-4 mt-5" >Posts</h3>
+            {% for data in information %}
+            <div class="inbox mytag" style="">
+                {% if data.image %}
+                <div class="incenter-image">
+                    <img class="incenter-image-subpart" src="/media/{{data.image}}">
+                </div>
+                {% endif %}
+
+                <div class="incenter-heading">
+                    <div class="incenter-heading-subpart myclass">
+                        {{data.title|safe | linebreaks}}
+                    </div>
+                </div>
+
+                <div class="incenter-heading-functions">
+                    <div class="incenter-heading-functions-subparts">
+                        <a>
+                            By {{data.user_name2.first_name}} {{data.user_name2.last_name}}
+                        </a>
+                        <a>
+                            {{data.time}}
+                        </a>
+                        <a>
+                            {{data.date_Publish}}
+                        </a>
+                       
+                    </div>
+                    <div class="incenter-heading-functions-subparts">
+                        <a onclick="like('{{data.title}}','{{forloop.counter}}')" id="like{{forloop.counter}}" style="{% if request.user in data.liked.all %}color:red;{%endif%}">
+                            <i class="fa fa-thumbs-up"></i>
+                            {{data.liked.all.count}}
+                        </a> 
+                        <a onclick="dislike('{{data.title}}','{{forloop.counter}}')" id="dislike{{forloop.counter}}" style="{% if request.user in data.disliked.all %}color:red;{%endif%}">
+                            <i class="fa fa-thumbs-down"></i>
+                            {{data.disliked.all.count}}
+                        </a>
+                        <a href="{{data.link}}#comment"> 
+                            <i class="fa fa-comments-o" aria-hidden="true"></i>
+                            {{data.my_comments.count}}
+                          
+                        </a>
+                        <a onclick="bookmarks('{{data.title}}','{{forloop.counter}}')" id="book{{forloop.counter}}" style="color: {% if data in request.user.profile.favourities.all %} red; {%else %} {% endif %}"> <i class="fa fa-bookmark p-1 my-1 mr-3  myhover" ></i></a>
+                       
+                    </div>
+                </div>
+                {% if data.question_field %}
+                <div class="incenter-content">
+                    
+                    {% if data.description %}
+                    <div class="incenter-extra">
+                        <div class="incenter-extra-subparts" style="display: flex; justify-content: flex-start; align-items: center;">
+                            <a class="btn btn-sm btn-outline-warning " href="/discussion/{{data.id}}">
+                                Anwser
+                            </a>
+                            <p style="font-size: 13px; margin-left:5px;margin-top: 14px;"> <i class="fa fa-reply" aria-hidden="true"></i> {{data.user_question_4.all.count}}</p>
+                         
+                            <a class="fa-fa-alt"> 
+                            </a>
+                        </div>
+                    </div>
+                    <div class="incenter-content-subpart">
+                       <p>
+                           {{data.description|safe}}
+                       </p>
+                       
+                    </div>
+                    <div class="incenter-extra">
+                        <div class="incenter-extra-subparts">
+                            <a class="btn btn-sm btn-outline-warning rounded-pill" href="{{data.link}}">
+                                Continue Reading
+                            </a>
+                            <a class="fa-fa-alt"> 
+                            </a>
+                        </div>
+                    </div>
+                    {%else%}
+
+                    <div class="incenter-extra">
+                        
+                    </div>
+                    <div class="incenter-extra">
+                        <div class="incenter-extra-subparts" style="display: flex; justify-content: flex-start; align-items: center;">
+                            <a class="btn btn-sm btn-outline-warning " href="/discussion/{{data.id}}">
+                                Anwser
+                            </a>
+                            <p style="font-size: 13px; margin-left:5px;margin-top: 14px;"> <i class="fa fa-reply" aria-hidden="true"></i> {{data.user_question_4.all.count}}</p>
+                         
+                        </div>
+                    </div>
+                    <div class="incenter-content-subpart">
+                       <p>
+                           {{data.description|safe}}
+                       </p>
+                       
+                    </div>
+                    {% endif %}
+                </div>
+                {%else%}
+                <div class="incenter-content">
+
+                    <div class="incenter-content-subpart">
+                       
+                            {{data.description|safe | linebreaks}}
+                       
+                    </div>
+                    
+                </div>
+                <div class="incenter-extra">
+                    <div class="incenter-extra-subparts">
+                        <a class="btn btn-sm btn-outline-warning rounded-pill" href="{{data.link}}">
+                            Continue Reading
+                        </a>
+                        <a class="fa-fa-alt"> 
+                        </a>
+                    </div>
+                </div>
+                
+
+                {% endif %}
+
+                <div class="incenter-extra">
+                    <div class="incenter-extra-subparts mt-2">
+                        {% for i in data.tags|remove %}
+                        <a class="ml-2" href="/hashtags/{{i|strip|capfirst|addhyphen}}/" style="font-size: 14px; ">
+                            #{{i|strip|capfirst}} 
+                        </a>
+                        {% endfor %}
+                        <a class="fa-fa-alt"> 
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+          
+
+            {% endfor %}
+           
+        </div>
+        <div class = "col-xm col-sm col-md col-xl-3">
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="card" style=";">
+                        <div class="card-body">
+                         <center> <h4 class="card-title mb-3">Listing  </h4> </center>
+                         <hr>
+                          {% for data in list %}
+                          <div class="mb-2">
+                          <h6 style="font-size: 13px;" class="card-subtitle mb-2 text-muted">{{data.description}}</h6>
+                          <p style="font-size: 15px;" class="card-text">{{data.heading}}</p>
+                          <p style="font-size: 10px; margin-top: -10px;" class="card-text">{{data.time}}, {{data.date}}</p>
+                          <a class="btn btn-sm btn-outline-warning" style="font-size: 13px;" href="{{data.link}}" class="card-link">Visit  <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                          
+                        </div>
+                        <hr>
+                        {% endfor %}
+                        </div>
+                        <div style="margin-top: -15px; display: flex; justify-content: center; " class="mb-3">
+                         <a href="{% url 'listing' %}" class="btn btn-sm btn-outline-warning">View More</a>
+                         
+                          </div>
+                      </div>
+                      
+                </div>
+              
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="card" >
+                        <div class="card-body">
+                         <center> <h4 class="card-title mb-3">Question and Anwser  </h4> </center>
+                         <hr>
+                          {% for data in question %}
+                          <div class="mb-2">
+                          
+                          <p style="font-size: 15px;" class="card-text">{{data.title}}</p>
+                          <p style="font-size: 10px; margin-top: -10px;" class="card-text">{{data.time}}, {{data.date_Publish}}</p>
+                          <a class="btn btn-sm btn-outline-warning" style="font-size: 13px;" href="/discussion/{{data.id}}" class="card-link">Anwser  <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                          
+                        </div>
+                        <hr>
+                        {% endfor %}
+                        </div>
+                        <div style="margin-top: -15px; display: flex; justify-content: center; " class="mb-3">
+                         <a href="{% url 'discussion' %}" class="btn btn-sm btn-outline-warning">View More</a>
+                         
+                          </div>
+                      </div>
+                      
+                </div>
+              
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                          <h5 class="card-title">Top Hits   </h5>
+                          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                          <a href="#" class="card-link">Card link</a>
+                          <a href="#" class="card-link">Another link</a>
+                        </div>
+                      </div>
+                </div>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                          <h5 class="card-title">Topics   </h5>
+                          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                          <a href="#" class="card-link">Card link</a>
+                          <a href="#" class="card-link">Another link</a>
+                        </div>
+                      </div>
+                </div>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-body">
+                          <h5 class="card-title">Companies  </h5>
+                          <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                          <a href="#" class="card-link">Card link</a>
+                          <a href="#" class="card-link">Another link</a>
+                        </div>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

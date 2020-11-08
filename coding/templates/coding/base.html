@@ -1,0 +1,183 @@
+<!DOCTYPE html5>
+<html>
+    <head>
+            <title>
+                {% block title %}
+                    Blogging
+                {% endblock %}
+            </title>
+
+            <meta charset="utf-8"> 
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit">
+
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+            <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+            
+
+            <style>
+                body{
+                    font-family: Arial, Helvetica, sans-serif;
+                }
+                {% block style %}
+
+                {% endblock %}
+
+            </style>
+
+            {% block jscss %}
+
+            {% endblock %}
+
+
+
+
+
+    </head>
+    <body>
+        {% block navbar %}
+      
+        {% endblock %}
+
+        {% block body %}
+
+        {% endblock %}
+
+
+        {% block script %}
+
+        {% endblock %}
+
+        <script>
+            function bookmarks(title,id){
+      var url = '/my_article/save/?title='+title;
+
+      var req = new XMLHttpRequest(); 
+      req.onreadystatechange = function(){
+          if(this.readyState == 4 && this.status == 200){
+            var details = JSON.parse(req.responseText);
+            var s = 'book'+id;
+            if(details[0] == true){
+              document.getElementById(s).style.color = "";
+             
+              
+            }
+            else{
+              document.getElementById(s).style.color = "red";
+              
+            }
+
+          }
+        };
+        req.open("GET",url,true);
+        req.send();
+    }
+    function subscribe(title,id){
+      var url = '/subscribe/?title='+title;
+
+      var req = new XMLHttpRequest(); 
+      req.onreadystatechange = function(){
+          if(this.readyState == 4 && this.status == 200){
+            var details = JSON.parse(req.responseText);
+            table = document.getElementById('myTable');
+            var s = 'subs'+title;
+            classes = document.getElementsByClassName(s);
+            
+            console.log(classes);
+            if( details[0] == true){
+              for(i=0;i<classes.length;i++){
+              classes[i].innerHTML = 'Subscribe';
+              }
+             
+            }
+            else{
+              for(i=0;i<classes.length;i++){
+              classes[i].innerHTML = 'Unsubscribe';
+              }
+            
+           
+            }
+
+          }
+        };
+        req.open("GET",url,true);
+        req.send();
+    }
+    function validate(id,option,ins){
+      var url = '/aptitude/question/validate/'+id+'/'+option;
+
+      var req = new XMLHttpRequest(); 
+      req.onreadystatechange = function(){
+          if(this.readyState == 4 && this.status == 200){
+            var details = JSON.parse(req.responseText);
+            if (details[0] == true){
+              
+              document.getElementById('sol'+ins+details[1]).className = 'btn btn-success';
+              
+            }
+            else{
+                document.getElementById('sol'+ins+option).className = 'btn btn-danger';
+            }
+            document.getElementById('sol'+ins+'A').disabled = true;
+            document.getElementById('sol'+ins+'B').disabled = true;
+            document.getElementById('sol'+ins+'C').disabled = true;
+            document.getElementById('sol'+ins+'D').disabled = true;
+
+         
+          }
+        };
+        req.open("GET",url,true);
+        req.send();
+    }
+    function like(title,id){
+      var url = '/article/like/?title='+title;
+
+      var req = new XMLHttpRequest(); 
+      req.onreadystatechange = function(){
+          if(this.readyState == 4 && this.status == 200){
+            var details = JSON.parse(req.responseText);
+            if (details[0] == true){
+              document.getElementById('like'+id).innerHTML = "<i class='fa fa-thumbs-up p-1 my-1  icon-pack'></i>"+details[1];
+              document.getElementById('dislike'+id).innerHTML = "<i class='fa fa-thumbs-down p-1 my-1  icon-pack'></i>"+details[2];
+            }
+            else{
+              document.getElementById('like'+id).innerHTML = "<i class='fa fa-thumbs-up p-1 my-1  icon-pack' style='color:red;'></i>"+details[1];
+             
+              document.getElementById('dislike'+id).innerHTML = "<i class='fa fa-thumbs-down p-1 my-1  icon-pack'></i>"+details[2];
+            }
+         
+          }
+        };
+        req.open("GET",url,true);
+        req.send();
+    }
+    function dislike(title,id){
+      var url = '/article/dislike/?title='+title;
+
+      var req = new XMLHttpRequest(); 
+      req.onreadystatechange = function(){
+          if(this.readyState == 4 && this.status == 200){
+            var details = JSON.parse(req.responseText);
+            console.log(details);
+            if (details[0] == true){
+              document.getElementById('dislike'+id).innerHTML = "<i class='fa fa-thumbs-down p-1 my-1  icon-pack'></i> "+details[1];
+              document.getElementById('like'+id).innerHTML = "<i class='fa fa-thumbs-up p-1 my-1  icon-pack' ></i> "+details[2];
+            }
+            else{
+              document.getElementById('dislike'+id).innerHTML = "<i class='fa fa-thumbs-down p-1 my-1  icon-pack' style='color:red;'></i> "+details[1];
+             
+              document.getElementById('like'+id).innerHTML = "<i class='fa fa-thumbs-up p-1 my-1  icon-pack'></i> "+details[2];
+            }
+         
+          }
+
+        };
+        req.open("GET",url,true);
+        req.send();
+    }
+        </script>
+    </body>
+</html>

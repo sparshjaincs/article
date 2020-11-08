@@ -1,0 +1,91 @@
+{% extends 'coding/base.html' %}
+{% load crispy_forms_tags %}
+{% load shortcut %}
+{% block navbar %}
+
+{% include 'coding/header.html' %}
+{%endblock %}
+{% block style %}
+.imge{
+    width:40px;
+    border-radius:100%;
+}
+{% endblock %}
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-xl-1">
+
+        </div>
+        <div class="col-12 col-xl-10">
+            <div class="mt-5">
+                {% if messages %}
+           
+                {% for message in messages %}
+                <li{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+         
+            {% endif %}
+                <div class="card">
+                    <div class="card-body">
+                        
+                        <div class="" style="display: flex; justify-content: space-between; align-items: center; flex-direction: row;">
+                            <div style="display: flex; justify-content: flex-start; align-items: center;">
+                                <img src="/media/{{data.user_name2.profile.avatar}}" class="imge">
+                               <p style="font-size: 13px; margin-left: 10px; font-weight: 600;">{{data.user_name2.first_name}} {{data.user_name2.last_name}}</p>
+                               <p style="font-size: 13px; margin-left: 10px; font-weight: 600;">{{data.time}} {{data.date_Publish}}</p>
+                            </div>
+                            <div style="font-size: 13px;">
+                                <a onclick="like('{{data.title}}','{{forloop.counter}}')" id="like{{forloop.counter}}" style="{% if request.user in data.liked.all %}color:red;{%endif%}">
+                                    <i class="fa fa-thumbs-up"></i>
+                                    {{data.liked.all.count}}
+                                </a> 
+                                <a onclick="dislike('{{data.title}}','{{forloop.counter}}')" id="dislike{{forloop.counter}}" style="{% if request.user in data.disliked.all %}color:red;{%endif%}">
+                                    <i class="fa fa-thumbs-down"></i>
+                                    {{data.disliked.all.count}}
+                                </a>
+                                <a href="{{data.link}}#comment"> 
+                                    <i class="fa fa-comments-o" aria-hidden="true"></i>
+                                    {{data.my_comments.count}}
+                                  
+                                </a>
+                                <a onclick="bookmarks('{{data.title}}','{{forloop.counter}}')" id="book{{forloop.counter}}" style="color: {% if data in request.user.profile.favourities.all %} red; {%else %} {% endif %}"> <i class="fa fa-bookmark p-1 my-1 mr-3  myhover" ></i></a>
+                               
+                            </div>
+                           
+                           </div>
+                           <div>
+                            <p>
+                                {{data.title|safe|linebreaks}}
+                            </p>
+                        </div>
+                        <div class="incenter-extra" style="margin-top: -15px; font-size:13px;">
+                            <div class="incenter-extra-subparts">
+                                {% for i in data.tags|remove %}
+                                <a class="m-1" href="/hashtags/{{i|strip|capfirst|addhyphen}}/" style="font-size: 14px; ">
+                                    #{{i|strip|capfirst}} 
+                                </a>
+                                {% endfor %}
+                                <a class="fa-fa-alt"> 
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div>
+
+                    <form method ="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{form|crispy}}
+                        {{form.media}}
+
+                        <button class="btn btn-sm btn-outline-warning">POST</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

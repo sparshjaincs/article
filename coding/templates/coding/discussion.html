@@ -1,0 +1,204 @@
+{% extends 'coding/base.html' %}
+{% load crispy_forms_tags %}
+{% load shortcut %}
+{% block navbar%}
+{% include 'coding/header.html' %}
+{% endblock %}
+{% block style %}
+.myboard{
+    width:100%;
+    
+    background:none;
+    outline:none;
+    border:none;
+   
+    
+}
+.imge{
+    width:40px;
+    border-radius:100%;
+}
+{% endblock %}
+{% block body %}
+<div class="container-fluid">
+    <div class="row mt-5">
+        <div class="col-12 col-md-3 col-xl-3">
+            
+            <div style="display: flex; justify-content: flex-start; align-items: flex-end;flex-direction: column; ">
+                <h4>Categories</h4>
+                {% for i in categories%}
+                <div >
+                <a>
+                    {{i}}
+                </a>
+            </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-12 col-md-7 col-xl-6">
+            {% if messages %}
+           
+            {% for message in messages %}
+            <li{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+     
+        {% endif %}
+            <!-- Button trigger modal -->
+            <div class="card">
+                <div class="card-body">
+                    <div>
+                        <span class="badge badge-secondary rounded-pill" style="margin-top:-3px; font-size:16px;">{{user.first_name|first}}</span> {{user.first_name}} {{user.last_name}}
+                    </div>
+ 
+                    <a type="button"  class="myboard" data-toggle="modal" data-target="#exampleModal" style="display: flex; justify-content: center; font-size: 22px; color:#808080; font-weight: 600; letter-spacing: 1px;">
+                        Ask Anything
+                    </a>
+                </div>
+            </div>
+                
+                
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Ask</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <form method="POST" enctype="multipart/form-data">
+                        <div class="modal-body">
+                            {% csrf_token %}
+                            {{form|crispy}}
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-sm btn-outline-warning ">POST</button>
+                        </div>
+                        </form>
+
+                    </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                       <h6>Recently Asked</h6>
+                       {% for data in questions %}
+                       <div class="card mb-2" id="{{data.title|addhyphen}}">
+                           <div class="card-body">
+                               <div class="" style="display: flex; justify-content: space-between; align-items: center; flex-direction: row;">
+                                <div style="display: flex; justify-content: flex-start; align-items: center;">
+                                    <img src="/media/{{data.user_name2.profile.avatar}}" class="imge">
+                                   <p style="font-size: 13px; margin-left: 10px; font-weight: 600;">{{data.user_name2.first_name}} {{data.user_name2.last_name}}</p>
+                                   <p style="font-size: 13px; margin-left: 10px; font-weight: 600;">{{data.time}} {{data.date_Publish}}</p>
+                                </div>
+                                <div style="font-size: 13px;">
+                                    <a onclick="like('{{data.title}}','{{forloop.counter}}')" id="like{{forloop.counter}}" style="{% if request.user in data.liked.all %}color:red;{%endif%}">
+                                        <i class="fa fa-thumbs-up"></i>
+                                        {{data.liked.all.count}}
+                                    </a> 
+                                    <a onclick="dislike('{{data.title}}','{{forloop.counter}}')" id="dislike{{forloop.counter}}" style="{% if request.user in data.disliked.all %}color:red;{%endif%}">
+                                        <i class="fa fa-thumbs-down"></i>
+                                        {{data.disliked.all.count}}
+                                    </a>
+                                    <a href="{{data.link}}#comment"> 
+                                        <i class="fa fa-comments-o" aria-hidden="true"></i>
+                                        {{data.my_comments.count}}
+                                      
+                                    </a>
+                                    <a onclick="bookmarks('{{data.title}}','{{forloop.counter}}')" id="book{{forloop.counter}}" style="color: {% if data in request.user.profile.favourities.all %} red; {%else %} {% endif %}"> <i class="fa fa-bookmark p-1 my-1 mr-3  myhover" ></i></a>
+                                   
+                                </div>
+                               
+                               </div>
+                               <div>
+                                <p style="font-weight:600;">
+                                    {{data.title|safe}}
+                                </p>
+                            </div>
+                            <div class="incenter-extra" style="margin-top: -15px; font-size:13px;">
+                                <div class="incenter-extra-subparts">
+                                    {% for i in data.tags|remove %}
+                                    <a class="m-1" href="/hashtags/{{i|strip|capfirst|addhyphen}}/" style="font-size: 14px; ">
+                                        #{{i|strip|capfirst}} 
+                                    </a>
+                                    {% endfor %}
+                                    <a class="fa-fa-alt"> 
+                                    </a>
+                                </div>
+                            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                               <div class="mt-2">
+                                   <!-- Button trigger modal -->
+                        <a href="/discussion/{{data.id}}/" class="btn btn-sm btn-outline-warning">
+                            Anwser
+                        </a>
+                        
+                
+                                                    </div>
+                            <hr>
+                            <div>
+
+                               
+                                   {% for i in data.user_question_4.all|getlatest %}
+                            
+                                {% if i.explanation %}
+                                   <div class="mt-4">
+                                    <div style="display: flex; justify-content: flex-start; align-items: center;">
+                                        <img src="/media/{{i.user_anwser.profile.avatar}}" class="imge">
+                                       <p style="font-size: 13px; margin-left: 10px; font-weight: 600;">{{i.user_anwser.first_name}} {{i.user_anwser.last_name}}</p>
+                                       <p style="font-size: 13px; margin-left: 10px; font-weight: 600;">{{i.time}} {{i.date}}</p>
+                                    </div>
+                                   </div>
+                                   <p> {{i.explanation|safe|linebreaks}}
+                                </p>
+                               
+                                
+                                {% endif %}
+                                   {% endfor %}
+                                
+
+                            </div>
+                        
+                                                    
+                                                </div>
+                                            </div> 
+                                            {% endfor %}
+                                            </div>
+                                        </div>
+
+
+                                
+                                </div>
+                                <div class="col-12 col-md-2 col-xl-3">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <form method="POST" action="?flag=1">
+                                                {% csrf_token %}
+                                                {{categoryform|crispy}}
+                                                <button type="submit" class="btn btn-sm btn-outline-warning">Add Category</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+</div>
+{% endblock %}

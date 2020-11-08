@@ -1,0 +1,174 @@
+{% extends 'coding/base.html' %}
+{% load shortcut %}
+{% block navbar %}
+            {% include 'coding/header.html' %}
+        {% endblock %}
+{% block style %}
+.incenter-image{
+
+    display:flex;
+    justify-content:center;
+    
+}
+.inbox{
+    padding:30px;
+    
+}
+
+.incenter-image{
+    padding-bottom:30px;    
+}
+
+
+.incenter-image-subpart{
+width:100%;
+height:auto;
+border-radius:8px;
+}
+
+
+.incenter-heading{
+    display:flex;
+    justify-content:center;
+    padding:0px;
+}
+
+.incenter-heading-subpart{
+
+font-size:30px;
+font-weight:600;
+line-height:30px;
+padding-bottom:20px;
+display:flex;
+    justify-content:center;
+
+}
+.incenter-heading-functions{
+    display:flex;
+    justify-content:space-between;
+}
+.incenter-heading-functions-subparts a{
+width:auto;
+
+
+}
+.incenter-heading-functions-subparts{
+
+
+}
+.incenter-content{
+    margin-top:20px;
+}
+
+.tabbing{
+    width:200px;
+    text-align:left;
+    padding:3px;
+    
+}
+
+.categories{
+    height:400px;
+    overflow-y:scroll;
+}
+{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid">
+    <div class="row">
+        
+    </div>
+    <div class="row">
+        <div class="col-12 col-xl-3">
+
+           
+        </div>
+
+        
+        <div class="col-12 col-xl-6">
+            <h3 class="ml-4 mt-5" >Bookmarks</h3>
+            {% for data in request.user.profile.favourities.all %}
+            <div class="inbox">
+                <div class="incenter-image">
+                    <img class="incenter-image-subpart" src="/media/{{data.image}}">
+                </div>
+
+                <div class="incenter-heading">
+                    <div class="incenter-heading-subpart">
+                        {{data.title|safe | linebreaks}}
+                    </div>
+                </div>
+
+                <div class="incenter-heading-functions">
+                    <div class="incenter-heading-functions-subparts">
+                        <a>
+                            By {{data.author}}
+                        </a>
+                        <a>
+                            {{data.time}}
+                        </a>
+                        <a>
+                            {{data.date_Publish}}
+                        </a>
+                       
+                    </div>
+                    <div class="incenter-heading-functions-subparts">
+                        <a onclick="like('{{data.title}}','{{forloop.counter}}')" id="like{{forloop.counter}}" style="{% if request.user in data.liked.all %}color:red;{%endif%}">
+                            <i class="fa fa-thumbs-up"></i>
+                            {{data.liked.all.count}}
+                        </a> 
+                        <a onclick="dislike('{{data.title}}','{{forloop.counter}}')" id="dislike{{forloop.counter}}" style="{% if request.user in data.disliked.all %}color:red;{%endif%}">
+                            <i class="fa fa-thumbs-down"></i>
+                            {{data.disliked.all.count}}
+                        </a>
+                        <a href="{{data.link}}#comment"> 
+                            <i class="fa fa-comments-o" aria-hidden="true"></i>
+                            {{data.my_comments.count}}
+                          
+                        </a>
+                        <a onclick="bookmarks('{{data.title}}','{{forloop.counter}}')" id="book{{forloop.counter}}" style="color: {% if data in request.user.profile.favourities.all %} red; {%else %} {% endif %}"> <i class="fa fa-bookmark p-1 my-1 mr-3  myhover" ></i></a>
+                       
+                    </div>
+                </div>
+
+                <div class="incenter-content">
+
+                    <div class="incenter-content-subpart">
+                       
+                            {{data.description|safe | linebreaks}}
+                       
+                    </div>
+                </div>
+                <div class="incenter-extra">
+                    <div class="incenter-extra-subparts">
+                        <a class="btn btn-outline-warning rounded-pill" href="{{data.link}}">
+                            Continue Reading
+                        </a>
+                        <a class="fa-fa-alt"> 
+                        </a>
+                    </div>
+                </div>
+
+                <div class="incenter-extra">
+                    <div class="incenter-extra-subparts mt-2">
+                        {% for i in data.tags|remove %}
+                        <a class="ml-2" href="/hashtags/{{i|strip|capfirst|addhyphen}}/" style="font-size: 14px; ">
+                            #{{i|strip|capfirst}} 
+                        </a>
+                        {% endfor %}
+                        <a class="fa-fa-alt"> 
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            {% endfor %}
+           
+        </div>
+      
+    </div>
+
+</div>
+{% endblock %}
