@@ -19,6 +19,7 @@
             <form method = 'POST'>
                 {% csrf_token %}
                 {{form|crispy}}
+                {{form.media}}
                 <button class = "btn btn-outline-warning" type="submit">Contribute</button>
 
             </form>

@@ -35,7 +35,7 @@ border-radius:8px;
 
 .incenter-heading-subpart{
 
-font-size:30px;
+font-size:25px;
 font-weight:600;
 line-height:30px;
 padding-bottom:20px;
@@ -99,9 +99,10 @@ width:auto;
 {% endblock %}
 {% block body %}
 
-<div class="container-fluid">
+<div class="container-fluid mt-2">
     <div class="row">
         <div class="col-12 mt-3 pr-3 " style="display: flex; justify-content: flex-end;" >
+            <!--
             <div>
                
                     <div class="input-group mr-4">
@@ -110,64 +111,26 @@ width:auto;
                     </div>
                
             </div>
-            <a href = "{% url 'discussion' %}" class="btn btn-outline-warning mr-2"> Ask and Anwser</a>
-            <a href = "{% url 'create_post' %}" class="btn btn-outline-warning"> Create Post</a>
+            -->
+            <a href = "{% url 'create_post' %}" class="btn btn-sm btn-outline-warning mr-2"><i class="fa fa-plus" aria-hidden="true"></i> Create Post</a>
+            <a href = "{% url 'discussion' %}" class="btn btn-sm btn-outline-warning mr-2"><i class="fa fa-question" aria-hidden="true"></i> Ask and Anwser</a>
+            <a href = "{% url 'create_post' %}" class="btn btn-sm btn-outline-warning"><i class="fa fa-plus" aria-hidden="true"></i> Write Article</a>
         </div>
     </div>
     <div class="row">
         <div class="col-12 col-xl-3">
 
-            <div class="row">
-                <div class="col-12 d-none d-md-block mt-5">
-                    <div style="display: flex; flex-direction: column; align-items: center;" >
-                    
-                        <a class="tabbing" href="{% url 'aptitude' %}">Aptitude</a>
-                        <a class="tabbing" href="{% url 'courses' %}">Courses</a>
-                        <a class="tabbing" href="{% url 'coding' %}">Coding</a>
-                        <a class="tabbing">Job Portal</a>
-                      
-                        <a class="tabbing">Job Preparation</a>
-                        <a class="tabbing">Interview Experience</a>
-                        
-                        <!--<a  class="tabbing btn btn-outline-warning rounded-pill" href="#">More</a>-->
-                    </div>
-                </div>
-
-            </div>
-            <div class="row mt-5">
-                
-                <div class="col-12 d-none d-md-block mt-5">
-                   <h5> <center>Popular Hashtags</center></h5>
-
-                   <br>
-                    <div class="categories" style="display: flex; flex-direction: column; align-items: center;" >
-
-                        <a class ="tabbing" href="/hashtags/Discuss/">Discuss</a>
-                        <a class="tabbing" href="/hashtags/Maths/">Maths</a>
-                        <a class="tabbing" href="/hashtags/Coding/">Coding</a>
-                        <a class="tabbing" href="/hashtags/Aptitude/">Aptitude</a>
-                        <a class="tabbing" href="/hashtags/Jobs/">Jobs</a>
-                        <a class="tabbing" href="/hashtags/Interview_Experience/">Interview Experience</a>
-                        <a class="tabbing" href="/hashtags/Formulas/">Formulas</a>
-                        <a class="tabbing" href="/hashtags/Tricks/"> Tricks</a>
-                        <a class="tabbing" href="/hashtags/Python/" >Python</a>
-                        <a class="tabbing" href="/hashtags/Mock_Tests/">Mock Test</a>
-                        <a class="tabbing" href="/hashtags/Technology/" >Technology</a>
-                    
-                        
-                        
-                        <!--<a  class="tabbing btn btn-outline-warning rounded-pill" href="#">More</a>-->
-                    </div>
-                </div>
-
-            </div>
+        
+           
         </div>
 
         
-        <div class="col-12 col-xl-6 " id="myTable">
-            <h3 class="ml-4 mt-5" >Posts</h3>
+        <div class="col-12 col-xl-6 mt-5 " id="myTable">
+            <div class="inbox mytag card shadow-sm mb-2 " style="">
+
+            </div>
             {% for data in information %}
-            <div class="inbox mytag" style="">
+            <div class="inbox mytag shadow-sm card mb-2 " style="">
                 {% if data.image %}
                 <div class="incenter-image">
                     <img class="incenter-image-subpart" src="/media/{{data.image}}">
@@ -175,14 +138,23 @@ width:auto;
                 {% endif %}
 
                 <div class="incenter-heading">
-                    <div class="incenter-heading-subpart myclass">
-                        {{data.title|safe | linebreaks}}
+                    <div class=" myclass">
+                        {% if data.question_field %}
+                        <div style="font-weight: 600; float: left;">
+                            {{data.title|safe}}
+                        </div>
+                        {% else %}
+                        <div class="incenter-heading-subpart">
+                       <center> {{data.title|safe }}</center>
+                    </div>
+                       {% endif %}
+
                     </div>
                 </div>
 
                 <div class="incenter-heading-functions">
-                    <div class="incenter-heading-functions-subparts">
-                        <a>
+                    <div class="incenter-heading-functions-subparts small">
+                        <a >
                             By {{data.user_name2.first_name}} {{data.user_name2.last_name}}
                         </a>
                         <a>
@@ -193,7 +165,7 @@ width:auto;
                         </a>
                        
                     </div>
-                    <div class="incenter-heading-functions-subparts">
+                    <div class="incenter-heading-functions-subparts small">
                         <a onclick="like('{{data.title}}','{{forloop.counter}}')" id="like{{forloop.counter}}" style="{% if request.user in data.liked.all %}color:red;{%endif%}">
                             <i class="fa fa-thumbs-up"></i>
                             {{data.liked.all.count}}
@@ -218,7 +190,7 @@ width:auto;
                     <div class="incenter-extra">
                         <div class="incenter-extra-subparts" style="display: flex; justify-content: flex-start; align-items: center;">
                             <a class="btn btn-sm btn-outline-warning " href="/discussion/{{data.id}}">
-                                Anwser
+                                Anwser <i class="fa fa-arrow-right" aria-hidden="true"></i>
                             </a>
                             <p style="font-size: 13px; margin-left:5px;margin-top: 14px;"> <i class="fa fa-reply" aria-hidden="true"></i> {{data.user_question_4.all.count}}</p>
                          
@@ -228,14 +200,14 @@ width:auto;
                     </div>
                     <div class="incenter-content-subpart">
                        <p>
-                           {{data.description|safe}}
+                           {{data.description|safe|linebreaksbr}}
                        </p>
                        
                     </div>
                     <div class="incenter-extra">
                         <div class="incenter-extra-subparts">
-                            <a class="btn btn-sm btn-outline-warning rounded-pill" href="{{data.link}}">
-                                Continue Reading
+                            <a class="btn btn-sm btn-outline-warning" href="{{data.link}}">
+                                {% if data.question_field %} Read More {% else %}  Continue Reading {% endif%}<i class="fa fa-arrow-right" aria-hidden="true"></i>
                             </a>
                             <a class="fa-fa-alt"> 
                             </a>
@@ -249,7 +221,7 @@ width:auto;
                     <div class="incenter-extra">
                         <div class="incenter-extra-subparts" style="display: flex; justify-content: flex-start; align-items: center;">
                             <a class="btn btn-sm btn-outline-warning " href="/discussion/{{data.id}}">
-                                Anwser
+                                Anwser <i class="fa fa-arrow-right" aria-hidden="true"></i>
                             </a>
                             <p style="font-size: 13px; margin-left:5px;margin-top: 14px;"> <i class="fa fa-reply" aria-hidden="true"></i> {{data.user_question_4.all.count}}</p>
                          
@@ -257,7 +229,7 @@ width:auto;
                     </div>
                     <div class="incenter-content-subpart">
                        <p>
-                           {{data.description|safe}}
+                           {{data.description|safe|linebreaksbr}}
                        </p>
                        
                     </div>
@@ -268,15 +240,16 @@ width:auto;
 
                     <div class="incenter-content-subpart">
                        
-                            {{data.description|safe | linebreaks}}
+                            {{data.description|safe | linebreaksbr}}
                        
                     </div>
                     
                 </div>
+
                 <div class="incenter-extra">
-                    <div class="incenter-extra-subparts">
-                        <a class="btn btn-sm btn-outline-warning rounded-pill" href="{{data.link}}">
-                            Continue Reading
+                    <div class="incenter-extra-subparts mt-1">
+                        <a class="btn btn-sm btn-outline-warning " href="{{data.link}}">
+                          {% if data.question_field %} Read More ... {% else %}  Continue Reading {% endif %}<i class="fa fa-arrow-right" aria-hidden="true"></i>
                         </a>
                         <a class="fa-fa-alt"> 
                         </a>
@@ -289,8 +262,8 @@ width:auto;
                 <div class="incenter-extra">
                     <div class="incenter-extra-subparts mt-2">
                         {% for i in data.tags|remove %}
-                        <a class="ml-2" href="/hashtags/{{i|strip|capfirst|addhyphen}}/" style="font-size: 14px; ">
-                            #{{i|strip|capfirst}} 
+                        <a class="btn btn-sm btn-outline-primary " href="/hashtags/{{i|strip|capfirst|addhyphen}}/" style="font-size: 10px; padding:3px;">
+                            {{i|strip|capfirst}} 
                         </a>
                         {% endfor %}
                         <a class="fa-fa-alt"> 
@@ -299,7 +272,7 @@ width:auto;
                 </div>
 
             </div>
-          
+        
 
             {% endfor %}
            
@@ -307,14 +280,14 @@ width:auto;
         <div class = "col-xm col-sm col-md col-xl-3">
             <div class="row mt-5">
                 <div class="col-12">
-                    <div class="card" style=";">
+                    <div class="card shadow-sm " >
                         <div class="card-body">
                          <center> <h4 class="card-title mb-3">Listing  </h4> </center>
                          <hr>
                           {% for data in list %}
                           <div class="mb-2">
                           <h6 style="font-size: 13px;" class="card-subtitle mb-2 text-muted">{{data.description}}</h6>
-                          <p style="font-size: 15px;" class="card-text">{{data.heading}}</p>
+                          <p style="" class="small">{{data.heading|safe|linebreaksbr}}</p>
                           <p style="font-size: 10px; margin-top: -10px;" class="card-text">{{data.time}}, {{data.date}}</p>
                           <a class="btn btn-sm btn-outline-warning" style="font-size: 13px;" href="{{data.link}}" class="card-link">Visit  <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                           
@@ -323,7 +296,7 @@ width:auto;
                         {% endfor %}
                         </div>
                         <div style="margin-top: -15px; display: flex; justify-content: center; " class="mb-3">
-                         <a href="{% url 'listing' %}" class="btn btn-sm btn-outline-warning">View More</a>
+                         <a href="{% url 'listing' %}" class="btn btn-sm btn-outline-warning">View More <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                          
                           </div>
                       </div>
@@ -334,14 +307,14 @@ width:auto;
 
             <div class="row mt-5">
                 <div class="col-12">
-                    <div class="card" >
+                    <div class="card shadow-sm" >
                         <div class="card-body">
                          <center> <h4 class="card-title mb-3">Question and Anwser  </h4> </center>
                          <hr>
                           {% for data in question %}
                           <div class="mb-2">
                           
-                          <p style="font-size: 15px;" class="card-text">{{data.title}}</p>
+                          <p style="font-size: 12px;" class="text-muted" >{{data.title|safe}}</p>
                           <p style="font-size: 10px; margin-top: -10px;" class="card-text">{{data.time}}, {{data.date_Publish}}</p>
                           <a class="btn btn-sm btn-outline-warning" style="font-size: 13px;" href="/discussion/{{data.id}}" class="card-link">Anwser  <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
                           

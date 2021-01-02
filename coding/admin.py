@@ -14,3 +14,7 @@ admin.site.register(Company)
 admin.site.register(Aptitude)
 admin.site.register(List)
 admin.site.register(Anwsers)
+admin.site.register(Syllabus)
+admin.site.register(Discussion_comment)
+admin.site.register(Job_Search)
+

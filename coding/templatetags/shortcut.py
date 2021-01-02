@@ -1,5 +1,5 @@
 from django import template
-
+import json as js
 register = template.Library()
 
 @register.filter
@@ -46,3 +46,41 @@ def latest(value):
     else:
         value = [value[0]]
     return value
+
+@register.filter
+def json(value):
+    value = value.split(",")
+    return value
+
+
+@register.filter
+def sorting(value):
+    value = value.order_by('-score')
+    return value
+
+@register.filter
+def multiply(value,arg):
+    return value*arg
+
+@register.filter
+def check(value,arg):
+    val = 2
+    try:
+        if arg[value.question_id] == value.correct:
+            val = 1
+        elif arg[value.question_id] != value.correct:
+            val = 0
+    except:
+        val=2
+   
+
+    return val
+
+@register.filter
+def check1(value,arg):
+
+    return arg[value.question_id]
+
+@register.filter
+def in_category(things, category):
+    return things.filter(category=category)

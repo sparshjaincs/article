@@ -1,0 +1,915 @@
+{% extends 'coding/base.html'%}
+{% load shortcut %}
+{% block navbar %}
+{% include 'coding/header.html' %}
+{% endblock %}
+
+{% block jscss %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.min.js"></script>
+{% endblock %}
+{% block style %}
+#editor { 
+    position: absolute;
+    top:34 ;
+    right: 0;
+    bottom: 6;
+    left: 0;
+}
+::-webkit-scrollbar {
+    width: 6px;
+    height:6px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+
+  
+#myTabContent::-webkit-scrollbar {
+    width: 6px;
+    height:6px;
+  }
+  
+  /* Track */
+  #myTabContent::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+   
+  /* Handle */
+  #myTabContent::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+  /* Handle on hover */
+  #myTabContent::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+
+.sidepanel  {
+    width:0;
+    position: fixed;
+    z-index: 1;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+  }
+  
+  .sidepanel a {
+  }
+
+  
+  
+  
+  .openbtn {
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #111;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    width:760px;
+  }
+  
+  .openbtn:hover {
+    background-color:#444;
+  }
+.linedtextarea textarea, .linedwrap .codelines .lineno {
+	font-size: 10pt;
+	font-family: monospace;
+	line-height: normal !important;
+}
+
+.linedtextarea textarea {
+	
+	border: 0;
+}
+
+.linedwrap .lines {
+	margin-top: -1.5px;
+	width: 50px;
+	float: left;
+    overflow: hidden;
+    border-right:1px solid rgb(0,0,0,0.1);
+
+}
+
+.linedwrap .codelines {
+	padding-top: 5px;
+}
+
+.linedwrap .codelines .lineno {
+	color:#AAAAAA;
+	padding-right: 0.5em;
+	padding-top: 0.0em;
+	text-align: right;
+	white-space: nowrap;
+}
+
+.linedwrap .codelines .lineselect {
+    color: red;
+    
+}
+textarea{
+    width:100%;
+    height:610px;
+    padding-top:1px;
+    resize:none;
+}
+textarea:focus, input:focus{
+    outline: none;
+}
+.nav  a{
+    color:black;
+    font-size:13px;
+    padding:10px;
+    padding-left:20px;
+    padding-right:20px;
+    
+}
+.code_snippet .nav-item {
+    border-top:4px solid #5BC0DE;
+}
+tr{
+    font-size:13px;
+}
+.nav .active{
+    border-top:none;
+    border-bottom:2px solid #2193b0;
+}
+.anc:hover{
+    background-color:#F0F0F0;
+    
+}
+@keyframes jumping{
+    0%{
+    
+    }
+    50%{
+        transform: scale(2, 3);
+    }
+    100%{
+        transform: scale(0,0);
+    }
+}
+{% endblock %}
+
+{% block body %}
+<section style="height: 600px;">
+    <div id="listingdiv" class="shadow" style="display: none;">
+
+    
+    <div style="position: fixed; right:10; z-index:100; display: flex; justify-content: space-between;" class="card shadow">
+        <div id="listinfo" style="font-weight:600;" class="card-body text-muted" >
+            
+        </div>
+        
+        
+    </div>
+</div>
+<div id="mySidepanel" class="sidepanel" style="overflow-y: scroll;">
+    <div style="display: flex; justify-content: flex-end;">
+        <a style="font-size: 20px;" class="text-muted mr-3" href="javascript:void(0)" onclick="closeNav()">×</a>
+    </div>
+    
+    <div class="mt-5 pl-5"> 
+
+        <div style="display: flex; justify-content: flex-start;">
+           
+              <span class="badge p-2 shadow-sm badge-sm badge-primary rounded-pill">
+               {{problem.solved}}  / {{problem.total}} Solved
+              </span> 
+              <span class="badge p-2 ml-2 shadow-sm badge-sm badge-success rounded-pill">
+                {{problem.Easy}} Easy
+              </span>
+              <span class="badge ml-2 shadow-sm p-2 badge-sm badge-warning rounded-pill">
+                {{problem.Medium}} Medium
+              </span>
+              <span class="badge shadow-sm ml-2 p-2 badge-sm badge-danger rounded-pill">
+                {{problem.Hard}} Hard
+              </span>
+              <a class="ml-2 btn btn-sm shadow-sm btn-default border text-muted" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                <i class="fa fa-tag" aria-hidden="true"></i> Show Tags
+              </a>
+              <div class="dropdown  show">
+                <a class="btn dropdown-toggle text-muted border ml-2 shadow-sm btn-default btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-sticky-note-o" aria-hidden="true"></i> Solution
+                </a>
+              
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                  <a onclick = "filtering('solution','Has solution')" class="dropdown-item text-muted" href="#"> Has Solution</a>
+                  <a onclick = "filtering('solution','Has video solution')" class="dropdown-item text-muted" href="#">Has video solution</a>
+                  </div>
+              </div>
+              <div class="dropdown  show">
+                <a class="btn dropdown-toggle text-muted border ml-2 shadow-sm btn-default btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-check" aria-hidden="true"></i> Status
+                </a>
+              
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                  <a onclick = "filtering('status','Todo')" class="dropdown-item text-muted" href="#"><i class="fa fa-tasks"></i> Todo</a>
+                  <a onclick = "filtering('status','Solved')" class="dropdown-item text-muted" href="#"><i class="fa fa-check" aria-hidden="true"></i> Solved</a>
+                  <a onclick = "filtering('status','Attempted')" class="dropdown-item text-muted" href="#"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> Attempted</a>
+                </div>
+              </div>
+              <div class="dropdown  show">
+                <a class="btn dropdown-toggle text-muted border ml-2 shadow-sm btn-default btn-sm" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-tag" aria-hidden="true"></i> Tags
+                </a>
+              
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="height:300px; overflow-y:scroll;">
+                    {% for i in category %}
+                  <a onclick = "filtering('tags','{{i}}')" class="dropdown-item text-muted" href="#">{{i}}</a>
+                  {% endfor %}
+                  
+                </div>
+              </div>
+              <a onclick = "filtering('All','All')" class="ml-2 btn btn-sm shadow-sm btn-default border text-muted" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                <i class="fa fa-random" aria-hidden="true"></i> All
+              </a>
+        </div>
+        <hr>
+        <table id="example" class="table table-bordered table-striped mt-3 pt-3 " style="width:100%">
+            <thead>
+                <tr>
+                    <th>S.no</th>
+                    <th style="width:600px;">Title</th>
+                    
+                    <th>Acceptance</th>
+                    <th>Difficulty</th>
+                   
+                </tr>
+            </thead>
+            <tbody>
+                {% for x in problem.ques %}
+                    <tr>
+                        <td  class=" text-muted">
+                            <div style="display: flex; justify-content: space-between;">
+                                {{x.id}}
+                                <span class="">
+                                    {% if x.status == 'Solved' %}<i class="fa fa-check" style="color: green;"></i> {% elif x.status == 'Attempted' %}<i class="fa fa-question" style="color:#f0ad4e;"></i> {% else %} {% endif %}
+                                </span>
+                            </div>
+                        </td>
+                        <td   class=" text-muted" >
+                            
+                        <div style="display: flex; justify-content: space-between;" >
+                            <a href="/coding/practise/{{x.id}}/">{{x.title}}</a>
+                            <a><i class="fa fa-sticky-note-o"></i></a>
+                        </div>
+                        <div class="collapse mt-1" id="collapseExample">
+                            {% for i in x.tags.all %}
+                                <a href="#" class="btn btn-sm btn-outline-warning">{{i}}</a>
+                            {% endfor %}
+                          </div>
+                    </td>
+                        
+                        <td class="text-muted">40%</td>
+                        <td class="text-muted">
+                            {% if x.difficulty == 'Easy' %}
+                            <span class="badge badge-sm badge-success">Easy</span>
+                            {%elif x.difficulty == 'Moderate' %}
+                            <span class="badge badge-sm badge-warning">Medium</span>
+                             {% else %} 
+                             <span class="badge badge-sm badge-danger">Hard</span>
+                             {% endif %}
+                            </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        </div>
+  </div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-xl-6">
+
+
+        </div>
+
+        <div class="col-12 col-xl-6">
+
+
+        </div>
+    </div>
+    
+</div>
+
+<div class="modal fade" id="shortcut" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class=" p-3" style="background-color: #FDFDFD; display: flex; justify-content: space-between;">
+          <h4 class="modal-title text-muted" id="exampleModalLongTitle">Editor Shortcuts</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="font-size:15px;">
+          <div class="ml-2 mr-2" style=" display: flex; justify-content: space-between;">
+              <div class="text-muted">
+                To indent one level
+              </div>
+              <div class="text-muted">
+                TAB or CTRL + [
+              </div>
+          </div>
+          <hr>
+          <div class="ml-2 mr-2" style="display: flex; justify-content: space-between;">
+            <div class="text-muted">
+                To indent one fewer level
+                
+            </div>
+            <div class="text-muted">
+                SHIFT + TAB or CTRL + ]
+                
+            </div>
+        </div>
+        <hr>
+        <div class="ml-2 mr-2" style="display: flex; justify-content: space-between;">
+            <div class="text-muted">
+                Move line up/down
+                
+            </div>
+            <div class="text-muted">
+                CTRL + ^ + Up/Down
+                
+            </div>
+        </div>
+        <hr>
+        <div class="ml-2 mr-2" style="display: flex; justify-content: space-between;">
+            <div class="text-muted">
+                Delete line and copy to buffer
+                
+            </div>
+            <div class="text-muted">
+                CTRL + X
+                
+            </div>
+        </div>
+        <hr>
+
+        <div class="ml-2 mr-2" style="display: flex; justify-content: space-between;">
+            <div class="text-muted">
+                Comment/uncomment currect selection
+                
+            </div>
+            <div class="text-muted">
+                CTRL + /
+                
+                
+            </div>
+        </div>
+        <hr>
+        <div class="ml-2 mr-2" style="display: flex; justify-content: space-between;">
+            <div class="text-muted">
+                Undo action
+                  
+                
+            </div>
+            <div class="text-muted">
+                CTRL + Z
+                
+            </div>
+        </div>
+        <hr>
+        <div class="ml-2 mr-2" style="display: flex; justify-content: space-between;">
+            <div class="text-muted">
+                Redo action
+                 </div>
+            <div class="text-muted">
+                CTRL + SHIFT + Z
+                
+            </div>
+        </div>
+        
+            
+            
+
+        
+            
+         
+        </div>
+        
+      </div>
+    </div>
+  </div>
+<div class="modal fade" id="sharediv" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-muted" id="exampleModalLongTitle"><i class="fa fa-share-alt"></i> Share</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input id="shareinput" disabled type="text" class="form-control" value="{{request.build_absolute_uri}}">
+        </div>
+        <div class="modal-footer">
+            <span id="copystatus"></span>
+          <button onclick ="copyToClipboard()" type="button" class="btn btn-sm btn-outline-secondary">Copy</button>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+        
+        <div class="modal-body">
+          <div style="display: flex; justify-content: space-between;" class="mb-5">
+            <h3 class="text-muted" id="exampleModalLongTitle">Editor Settings</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="mb-5" style="display: flex; justify-content: space-between;">
+              <div>
+                  <div>
+                      <h4 class="text-muted">Font Size</h4>
+                  </div>
+                  <div class="text-muted">
+                    Choose your preferred font size for the code editor.
+                  </div>
+              </div>
+              <div>
+                <select id="fontsize" class="form-control" id="exampleFormControlSelect1" style="width:130px;">
+                    <option>12px</option>
+                    <option>13px</option>
+                    <option>14px</option>
+                    <option>15px</option>
+                    <option>16px</option>
+                  </select>
+              </div>
+          </div>
+          
+          <div class="mb-5" style="display: flex; justify-content: space-between;">
+            <div>
+                <div>
+                    <h4 class="text-muted">Theme</h4>
+                </div>
+                <div class="text-muted">
+                    Try different styles and syntax highlighting.
+                </div>
+            </div>
+            <div>
+              <select id="theme" class="form-control" id="exampleFormControlSelect1" style="width:130px;">
+                  <option>textmate</option>
+                  <option>github</option>
+                  <option>xcode</option>
+                  <option>eclipse</option>
+                  <option>monokai</option>
+                  
+                </select>
+            </div>
+        </div>
+
+        <div class="mb-5" style="display: flex; justify-content: space-between;">
+            <div>
+                <div>
+                    <h4 class="text-muted">Key Binding</h4>
+                </div>
+                <div class="text-muted">
+                    Want to practice Vim or Emacs? We have these key binding options available for you.
+                </div>
+            </div>
+            <div>
+              <select id="binding" class="form-control" id="exampleFormControlSelect1" style="width:130px;">
+                  <option>Standard</option>
+                  <option>Emacs</option>
+                  <option>Vim</option>
+              
+                </select>
+            </div>
+        </div>
+
+        <div class="mb-5" style="display: flex; justify-content: space-between;">
+            <div>
+                <div>
+                    <h4 class="text-muted">Tab Size</h4>
+                </div>
+                <div class="text-muted">
+                    Choose the width of a tab character.
+                </div>
+            </div>
+            <div>
+              <select id="tabsize" class="form-control" id="exampleFormControlSelect1" style="width:130px;">
+                  <option>2 spaces</option>
+                  <option>4 spaces</option>
+                  <option>8 spaces</option>
+                </select>
+            </div>
+        </div>
+          
+        </div>
+        <div class="modal-footer">
+      
+          <button type="button" onclick="changesetting()" class="btn btn-sm border shadow-sm" style="background-color:#3A4350; color:white;">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="border p-2 "  style="position:fixed; bottom:0; left:0; width:100%; background-color: white;">
+    <div class="row">
+        <div class="col-6 col-xl-6">
+            <div style="display: flex; justify-content: space-between;">
+                <div>
+                    <a class="anc btn btn-sm border btn-default" onclick="openNav()"><i class="fa fa-list"></i> Problems</a>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+
+                    <a class="anc btn btn-sm border btn-default ml-2" onclick="filtering('pick','one')"><i class="fa fa-random"></i> Pick One</a>
+                    <a  data-toggle="tooltip" data-placement="top" title="Contribute Questions, Solutions, Testcases" class="btn btn-sm  btn-default ml-2"><i class="fa fa-at"></i> Contribute Questions</a>
+                </div>
+               
+              
+            </div>
+        </div>
+        <div class="col-6 col-xl-6" style="display: flex; justify-content: space-between;">
+            <div style="display: flex; justify-content: space-between;">
+                <a class=" anc btn btn-sm border btn-default" onclick="show_palette();"><i class="fa fa-terminal"></i> Console <i class="fa fa-caret-up"></i></a>
+                
+            </div>
+            
+            <div  style="font-size: 13px;">
+                <a onclick="runtestcode()" class=" anc btn btn-sm border btn-default ml-2"><i class="fa fa-play"></i> Run Code</a>
+                <a class="anc btn btn-sm border btn-default ml-2 mr-2" style="color: white; background-color: #3A4350;"><i class="fa fa-play mb-1" style="font-size: 10px;" ></i> Submit</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+</div>
+
+</section>
+
+{% endblock %}
+
+
+
+{% block script %}
+<script>
+    // ace editor initialisation
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/textmate"); //monokai
+    editor.session.setMode("ace/mode/python");
+    document.getElementById('editor').style.fontSize='16px';
+    // ------------------------- editor setting -------------------------------------------------
+
+    function changesetting(){
+        var font = document.getElementById('fontsize').value;
+        var theme = document.getElementById('theme').value;
+        var binding = document.getElementById('binding').value;
+        var space = document.getElementById('tabsize').value;
+        editor.setTheme("ace/theme/"+theme);
+        document.getElementById('editor').style.fontSize=font;
+        editor.session.setTabSize(space[0]);
+        editor.setKeyboardHandler("ace/keyboard/"+binding);
+
+
+
+    }
+    function change(language){
+        language = language.toLowerCase();
+        console.log(language);
+        
+    }
+
+
+    $("select").mouseup(function() {
+    var code = document.getElementById('title').value;
+
+    $.ajax({
+        type:'GET',
+        url:'/coding/template/ajax/{{id}}/',
+        data:{
+            lang:code,
+        },
+        success:function(json){
+            json = JSON.parse(json);
+            editor.session.setMode("ace/mode/"+code.toLowerCase());
+            //document.getElementById('editor').innerHTML = "<pre>" + json['instance'] + "</pre>";
+            editor.setValue(json['instance']);
+            
+        }
+    });
+});
+//----------------------- onload fetching query ----------------------------------------------------------------------
+window.onload = fun('default');
+function fun(value){
+    var code = document.getElementById('title').value;
+
+    $.ajax({
+        type:'GET',
+        url:'/coding/template/ajax/{{id}}/',
+        data:{
+            lang:code,
+            method:value,
+        },
+        success:function(json){
+            json = JSON.parse(json);
+            editor.session.setMode("ace/mode/"+code.toLowerCase());
+            //document.getElementById('editor').innerHTML = "<pre>" + json['instance'] + "</pre>";
+            editor.setValue(json['instance']);
+            
+        }
+    });
+}
+
+// save code---------------------------------------------------------------
+function saving(){
+var lang = document.getElementById('title').value;
+var value = editor.getValue();
+$.ajax({
+        type:'POST',
+        url:'/coding/save/ajax/{{id}}/',
+        data:{
+            title:lang,
+            description:value,
+            csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+            action: 'post'
+        },
+        success:function(json){
+            json = JSON.parse(json);
+            console.log(json);
+            var str = ' <span class="btn btn-sm mr-2 mt-1 btn-outline-warning  rounded-pill" style="border:none;" ><i class="fa fa-dot-circle-o"> '+ json+ '</span>'
+            document.getElementById('savestatus').innerHTML = str;
+            $("#savestatus").children().delay(5000).fadeOut(800);   
+        
+        },
+        error : function(xhr,errmsg,err) {
+        //console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+    }
+});
+}
+
+    //-------------------------------------------------------------------------
+     $(document).ready(function() {
+        $('#example').DataTable({
+            
+        });
+    } );
+    // auto saving--------------------------
+    setInterval(function() {
+    // your code goes here...
+    saving();
+}, 100 * 1000);
+
+
+// ------------------------------------dragging functionality --------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//----------------------------------------runcode------------------------------------------------------
+
+    function runtestcode(){
+        document.getElementById('solpallete').style.display = 'none';
+        document.getElementById('pallete').style.display = 'block';
+        document.getElementById('temp').style.display = ' none';
+        document.getElementById('loader').style.display = 'block';
+        var ca = document.getElementById('case').value;
+         var lang = document.getElementById('title').value;
+        var value = editor.getValue();
+        
+        $.ajax({
+        type:'POST',
+        url:'/coding/test/ajax/{{id}}/',
+        data:{
+            title:lang,
+            description:value,
+            ca:ca,
+            csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+            action: 'post'
+        },
+        success:function(json){
+            json = JSON.parse(json);
+            console.log(json);
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('solpallete').style.display = 'block';
+            if (json[0] == false){
+                document.getElementById('stat').innerHTML = "<span style='color:#d9534f;'>"+json[2]+"</span>";
+            }
+            document.getElementById('time').innerHTML = "Runtime "+json[1];
+
+        
+        },
+        error : function(xhr,errmsg,err) {
+        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+    }
+});
+    }
+
+
+//----------------------------------------like-------------------------------------------------------------------------------------
+
+//-------------------------------------------------------------------------------------------------------------------------------
+
+function openNav() {
+  document.getElementById("mySidepanel").style.width = "765px";
+}
+
+function closeNav() {
+  document.getElementById("mySidepanel").style.width = "0";
+} 
+$(document).ready(function() {
+    $('#example').DataTable();
+} );
+function show_palette(){
+    if (document.getElementById('pallete').style.display == 'none'){
+    document.getElementById('pallete').style.display = 'block';
+    }
+    else{
+        document.getElementById('pallete').style.display = 'none';
+    }
+}
+function show_sidepanel(){
+    if (document.getElementById('sidepanel').style.display == 'none'){
+    document.getElementById('sidepanel').style.display = 'block';
+    }
+    else{
+        document.getElementById('sidepanel').style.display = 'none';
+    }
+}
+</script>
+
+
+<script>
+    function copyToClipboard() {
+    var textBox = document.getElementById("shareinput");
+    textBox.select();
+    document.execCommand("copy");
+    document.getElementById('copystatus').innerHTML = '<span class="mt-1 p-0" style="color:#f0ad4e;" ><i class="fa fa-dot-circle-o"></i> Copied</span>';
+    $("#copystatus").children().delay(5000).fadeOut(800);
+}
+</script>
+<script>
+    function likes(id,value){
+$.ajax({
+    type:'GET',
+    url:'/coding/like/ajax/',
+    data:{
+        'value':value,
+    },
+    success:function(json){
+        json = JSON.parse(json);
+        
+        if (json[0] == true){
+            document.getElementById(id).innerHTML = "<i class='fa fa-thumbs-up' style='color:red; '></i> "+ json[1];
+            
+        }
+        else{
+            document.getElementById(id).innerHTML = "<i class='fa fa-thumbs-up text-muted' ></i> "+ json[1];
+        }
+        
+
+    }
+});
+
+}
+//-----------------------------------Lists --------------------------------------------------
+function lists(method,value,ids){
+    $.ajax({
+        type:'GET',
+        url:'/coding/list/ajax/',
+        data:{
+            'method':method,
+            'value':value,
+            'ids':ids,
+        },
+        success:function(json){
+            json = JSON.parse(json);
+            if (method == 'add'){
+                if (json['information'][1] == true){
+                    document.getElementById('heart').style.color = "red";
+                    document.getElementById('listinfo').innerHTML = '{{data.title}} is added to '+json['information'][0];
+                }
+                else{
+                    document.getElementById('heart').style.color = "#6E777F";
+                    document.getElementById('listinfo').innerHTML = '{{data.title}} is removed from '+json['information'][0];
+                }
+                
+                document.getElementById('listingdiv').style.display = 'block';
+                $("#listingdiv").delay(5000).hide(0);
+            }
+            else{
+                var anchor = document.createElement('a');
+                anchor.style.cursor = 'pointer';
+                anchor.innerHTML = ```
+                <div style="display: flex; justify-content: flex-start;" class="border-bottom pb-2 pt-2">
+                                        <span style="color: #633B64;" class="mt-1 mr-2"><i class="fa fa-list"></i></span><span class="text-muted">```+json['information']['title']+```</span>
+                                    </div>
+                ```
+                document.getElementById(value).appendChild(anchor);
+            }
+           
+        }
+    })
+}
+// --------------------------------- Filtering --------------------------------------------------
+
+function filtering(method,value){
+        $.ajax({
+            type:'GET',
+            url:'/coding/filter/ajax/table/',
+            data:{
+                'method':method,
+                'value':value,
+            },
+            success:function(json){
+                json = JSON.parse(json);
+
+                console.log(json['problem']);
+                json = json['problem']
+                if (method == 'pick'){
+                    window.location.replace("/coding/practise/"+json+"/");
+                }
+                string = "";
+                var table = $('#example').DataTable();
+                table.clear().draw();
+                for(var i=0; i<json.length;i++){
+                    var diff,status;
+                    if (json[i].difficulty == 'Moderate'){
+                        diff = '<span class="badge badge-sm badge-warning">'+json[i].difficulty+'</span>';
+                    }
+                    else if(json[i].difficulty == 'Easy'){
+                        diff = '<span class="badge badge-sm badge-success">'+json[i].difficulty+'</span>';
+                    }
+                    else{
+                        diff = '<span class="badge badge-sm badge-danger">'+json[i].difficulty+'</span>';
+                    }
+                    if (json[i].status == 'Solved'){
+                        status = '<i class="fa fa-check" style="color: green;"></i>';
+                    }
+                    else if(json[i].status == 'Attempted'){
+                        status = '<i class="fa fa-question" style="color: #f0ad4e;"></i>';
+                    }
+                    else{
+                        status = "";
+                    }
+                    console.log(json[i].tag);
+                    
+                    
+ 
+                table.row.add( [
+                        `
+                        <div style="display: flex; justify-content: space-between;">
+                                        `+json[i].id+`
+                                        <span class="">
+                                            `+status+`
+                                         </span>
+                                    </div>
+                                    `,
+                        `
+                        <div style="display: flex; justify-content: space-between;" >
+                                    <a href="/coding/practise/`+json[i].id+`/">`+json[i].title+`</a>
+                                  
+                                </div>
+                                <div class="collapse mt-1" id="collapseExample">
+                                   
+                                  </div>
+                                `,
+                       '40%',
+                        diff,
+                       
+                 ] ).draw();
+
+                }
+              
+
+            },
+
+        });
+    }
+</script>
+{% endblock %}
+
+

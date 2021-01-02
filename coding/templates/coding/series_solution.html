@@ -1,0 +1,84 @@
+{%extends 'coding/base.html' %}
+{% load shortcut %}
+{% block navbar %}
+{% include 'coding/header.html' %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row mt-4">
+        <div class="col-12 mt-4">
+            <h4 class="text-muted">
+                    {{data.title}} Solutions
+            </h4>
+        </div>
+        <div class="col-12 mt-5">
+           <div style="width:100%;">
+                {% for i in data.questions.all %}
+                
+           <div class="card mb-2 " style="{% if i|check:sol == 1 %}border:1px solid #5cb85c; background-color:rgb(92, 184, 92,0.1);{% elif i|check:sol == 0 %}border:1px solid 	#d9534f; background-color:rgb(217, 83, 79,0.1); {%endif %}">
+                    <div class="card-body" >
+                        <p>
+                            {{i.question|safe}}
+                        </p>
+                       <div class="row">
+                            <div class="col-12 col-md-6">
+                            <div class="card mb-1" style=" {% if i.correct == 'A' %}border-left:4px solid rgb(92, 184, 92);  {% elif i|check1:sol == 'A' %}border-left:4px solid #d9534f;{% endif %}">
+                                    <div class="card-body p-2">
+                                       
+                                            A. {{i.A}}
+                                  
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="card mb-1" style=" {% if i.correct == 'B' %}border-left:4px solid rgb(92, 184, 92);  {% elif i|check1:sol == 'B' %}border-left:4px solid #d9534f; {% endif %}">
+                                    <div class="card-body p-2">
+                                        B. {{i.B}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="card mb-1" style=" {% if i.correct == 'C' %}border-left:4px solid rgb(92, 184, 92); {% elif i|check1:sol == 'C' %}border-left:4px solid #d9534f; {% endif %}">
+                                    <div class="card-body  p-2">
+                                        C. {{i.C}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="card mb-1" style=" {% if i.correct == 'D' %}border-left:4px solid rgb(92, 184, 92);  {% elif i|check1:sol == 'D' %}border-left:4px solid #d9534f; {% endif %}">
+                                    <div class="card-body  p-2">
+                                        D. {{i.D}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+
+                                <a class="btn btn-sm btn-secondary mt-2" style="float: right;" data-toggle="collapse" href="#collapseExample{{i.question_id}}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                    Solution
+                                  </a>
+
+                                 
+                            </div>
+                            <div class="col-12">
+                                <div class="collapse" id="collapseExample{{i.question_id}}">
+                                    <div class="card card-body mt-2">
+                                        <div>
+                                           Solution : {{i.correct}}
+                                        </div>
+                                     {{i.explanation|safe}}
+                                    </div>
+                                  </div>
+                            </div>
+                       </div>
+                    
+                    </div>
+
+                </div>
+                {% endfor %}
+           </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

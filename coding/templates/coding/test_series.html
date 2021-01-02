@@ -1,0 +1,112 @@
+{% extends 'coding/base.html' %}
+{% load shortcut %}
+{% block navbar %}
+{% include 'coding/header.html' %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-12  p-2 mt-5" >
+            <div style="display: flex; flex-direction: row;" class="">
+                <h4 class="text-muted">
+                    Explore {{series.0.instance.title}}
+                </h4>
+
+
+                
+            </div>
+        </div>
+
+        <div class="col-12 col-xl-8 mt-5">
+
+            <div class="row">
+                <div class="col-12 col-xl-12">
+                    <div>
+                        {% for data in series %}
+                        <div class="card mb-1 shadow-sm" style="padding-top:10px; padding-left:10px ;height:50px; border-left:4px solid #5BC0DE;">
+                            <div style="display:flex; justify-content:space-between;">
+                                <div style="display:flex; justify-content:flex-start;">
+                                <p class="text-muted">
+                                   {{forloop.counter}}. {{data.title}}
+                                </p>
+                                <p class="text-muted ml-3 pt-1" style="font-size: 12px;"> Time Duration:{{data.time_duration}} Minutes</p>
+                            </div>
+                            <div class="mr-3">
+                                {% if user in data.subscribers.all %}
+                                <a class="text-muted mr-3" href="/mock_test/test_series/solution/{{data.id}}/" style="font-size: 18px;" title="Solutions"> <i class="fa fa-tasks" aria-hidden="true"></i></a>
+                                <a class="text-muted mr-3"  style="font-size: 18px;" title="Detail Evaluation"> <i class="	fa fa-area-chart" aria-hidden="true"></i></a>
+                                {%else %}
+                                <a class="text-muted" href="/mock_test/test/{{data.id}}/" style="font-size: 18px;" title="Start Test" onclick="return confirm('Do you want to start the test?');"  > <i class="fa fa-play"></i></a>
+                                {%endif %}
+                            </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="col-12 col-xl-4 border-left order-first order-xl-last mt-2">
+            <div>
+                <center>
+                    <i style="font-size: 90px; color:#FFE069;" class="fa fa-trophy"></i>
+                </center>
+                <center>
+                    <p class="text-muted">Global Ranking</p>
+                </center>
+            </div>
+
+            <div>
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                   
+                {% for i in series %}
+                <li class="nav-item">
+                    <a class="nav-link {% if forloop.counter == 1%} active {% endif %}" id="home-tab{{i.id}}" data-toggle="tab" href="#home{{i.id}}" role="tab" aria-controls="home" aria-selected="true">{{i.title}}</a>
+                  </li>
+                {%endfor%}
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                {% for i in series %}
+                <div class="tab-pane fade {% if forloop.counter ==  1%} show active {% endif %}" id="home{{i.id}}" role="tabpanel" aria-labelledby="home-tab{{i.id}}">
+                    {%if i.given_test.all.count == 0%}
+                    <center>   
+                    <p class="text-muted mt-5">
+                        No Data Available
+                        </p>
+                    </center> 
+                    {%else %}
+                    {% for j in i.given_test.all|sorting%}
+                   
+
+                <div class="card mb-1" style="border-bottom:4px solid {%if forloop.counter == 1%} #5cb85c {%elif forloop.counter == 2%} #f0ad4e  {%elif forloop.counter == 3%}#292b2c {%else%} #5BC0DE; {%endif %}">
+                            <div class="card-body p-3" style="height:53px;" >
+                                <div style="display: flex; justify-content: space-between;">
+
+                                
+                               <p>
+                               {% if forloop.counter == 1%}<i class="fa fa-trophy" style="color: #FFE069;"></i> {%endif%}{{forloop.counter}}. {{j.users}}
+                               </p>
+                               <p>
+                                   {{j.score}} / {{i.questions.all.count|multiply:4}}
+                                </p>
+                            </div>
+
+                            
+                            </div>
+        
+                        </div>
+                   
+               
+                {%endfor%}
+                {%endif %}
+            </div>
+                {%endfor %}
+            </div>
+               
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

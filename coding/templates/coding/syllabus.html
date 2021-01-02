@@ -1,0 +1,604 @@
+{% extends 'coding/base.html' %}
+{% load shortcut %}
+{% block navbar %}
+{% include 'coding/header.html' %}
+{% endblock %}
+{% block style %}
+/*!
+ * Start Bootstrap - Simple Sidebar (https://startbootstrap.com/template-overviews/simple-sidebar)
+ * Copyright 2013-2017 Start Bootstrap
+ * Licensed under MIT 
+
+(https://github.com/BlackrockDigital/startbootstrap-simple-sidebar/blob/master/LICENSE)
+ */
+
+
+
+
+#wrapper {
+  padding-left: 250px;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+  padding-left: 0px;
+}
+
+
+#sidebar-wrapper {
+  
+        overflow-y:scroll;
+		    position: fixed;
+  
+                    left: 250px;
+  
+                    width: 250px;
+  
+                    height: 100%;
+  
+                    margin-left: -250px;
+                    margin-top:-10px;
+                    overflow-y: scroll;
+
+  		    overflow-x: hidden;
+          background-color:#262B40; 
+            
+  
+		    -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+		
+}
+
+
+#wrapper.toggled #sidebar-wrapper {width: 0px;
+}
+
+
+#page-content-wrapper {
+  width: auto;
+  position: absolute;
+  padding: 50px;
+}
+
+
+#wrapper.toggled #page-content-wrapper {
+  position: absolute;
+  margin-right: -250px;
+  width:100%;
+}
+
+
+
+
+/* Sidebar Styles */
+
+
+.sidebar-nav {
+  position: absolute;
+  top: 0;
+  width: 250px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border:none;
+}
+
+
+.sidebar-nav li {
+  text-indent: 20px;
+  line-height: 60px;
+}
+
+
+.sidebar-nav li a {
+  display: block;
+  text-decoration: none;
+  color: white  ;
+
+}
+
+
+.sidebar-nav li a:hover {
+  text-decoration: none;
+  color: #000;
+  background: rgba(0,0,0, 0.1);
+}
+
+
+.sidebar-nav li a:active, .sidebar-nav li a:focus {
+
+  text-decoration: none;
+  background-color:#3A3F48;
+}
+
+
+.sidebar-nav>.sidebar-brand {
+  height: 100px;
+  
+  
+  
+}
+
+.sidebar-nav>.sidebar-brand a {
+  color:white;
+  font-size:24px;
+}
+
+
+.sidebar-nav>.sidebar-brand a:hover {
+  color: #AC316E;
+  background: none;
+}
+
+
+/**
+
+@media(min-width:768px) {
+  
+#wrapper {
+    padding-left: 0;
+  }
+  
+#wrapper.toggled {
+    padding-left: 0px;
+  }
+  
+#sidebar-wrapper {
+    width: 100px;
+    margin-top:-10px;
+  }
+  
+#wrapper.toggled 
+#sidebar-wrapper {
+    width: 250px;
+  }
+  
+#page-content-wrapper {
+    padding-left: 50px;
+    position: relative;
+  }
+  
+#wrapper.toggled #page-content-wrapper {
+    position: relative;
+    margin-right: 0;
+ padding-left: 35px; }
+
+}
+
+**/
+
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: black;
+    color: white;
+    text-align: center;
+}
+
+.row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+.checked {
+    color: orange;
+  }
+.side .active{
+  border-left:2px solid #5BC0DE;
+}
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link{
+  border:none;
+  color:white;
+  opacity:0.7;
+  margin-left:13px;
+  margin-right:20px;
+  margin-bottom:5px;
+  padding:12px;
+  border-radius:5px;
+  letter-spacing:0.5px;
+  font-weight:500;
+  font-size:15px;
+  }
+  .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link:hover{
+border:none;
+
+opacity:1;
+background-color:#2E3650;
+
+}
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+  
+  border:none;
+  
+  border-radius:5px;
+  color:white;
+  background-color:#2E3650;
+  letter-spacing:0.5px;
+  opacity:1;
+}
+.card{
+  width:250px;
+  height:300px;
+  border-radius:5px;
+  <!--background:linear-gradient(330deg, #753a88, #cc2b5e);-->
+
+}
+
+{% endblock %}
+{% block body%}
+
+  <!-- Static navbar -->
+
+
+<div id="wrapper"  style="background-color: white;">
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper" class="shadow">
+        <ul class="sidebar-nav nav-tabs " id="nav-tab" role="tablist">
+            <li class="sidebar-brand " style="display: flex; align-items: center;">
+                <div style="display: flex; justify-content: flex-start;">
+                    <div>
+                        {% if data.logo.0 %}
+                        <img class="mt-3" src="{{data.logo.1}}" style="height: 50px; width: 50px; border:2px solid rgb(0,0,0,0.1); border-radius:5px; ">
+                        {%else%}
+                        <img class="mt-3" src=" " style="height: 30px; width: 30px;">
+                        {% endif %}
+                    </div>
+                    <div>
+                    <a href="#" style="" class="p-0 mt-2">
+                        {{comp}}
+                    </a>
+                </div>
+                </div>
+               
+            </li>
+            <div class="nav flex-column side" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true"> About</a>
+                <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Syllabus</a>
+                <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Paper Pattern</a>
+                <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-exp" role="tab" aria-controls="v-pills-messages" aria-selected="false">Interview Experience</a>
+                {% for i in name.side_data|json %}
+                <a onclick = "fetch('{{name.name}}','{{i}}','all')" class="nav-link" id="v-pills-settings-tab{{forloop.counter}}" data-toggle="pill" href="#v" role="tab" aria-controls="v-pills-settings" aria-selected="false">{{i}}</a>
+                {% endfor %}
+            </div>
+        
+           
+          
+
+        </ul>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <nav class="navbar navbar-expand-sm navbar-light  shadow" style="height:45px; margin-top:-10px; border-bottom:1px solid rgb(0,0,0,0.1); position: fixed; width:100%; z-index:1000; background-color: white;">
+    <a class="navbar-brand" href="#">
+        <button id="menu-toggle" class="btn btn-default" style="">
+           <i class="fa fa-bars
+
+            "></i></button>  
+    </a>
+  
+    <div class="collapse navbar-collapse  " id="navbarNav">
+      <ul class="navbar-nav" style="font-size: 14px;">
+        <li class="nav-item mr-3">
+          <a class="nav-link" href="{% url 'mock_test' %}"><i class="fa fa-university"></i> Mock Test Series <span class="sr-only"></span></a>
+        </li>
+        
+        <li class="nav-item  mr-3 dropdown" >
+          <a class="nav-link "  id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lightbulb-o"></i> Tricks and Shortcuts </a>
+          <ul class="dropdown-menu pull-left" aria-labelledby="navbarDropdownMenuLink" style="font-size: 13px; max-height:450px; overflow-y:scroll;">
+        
+                  
+                
+                      <li><a class="dropdown-item" href="{% url 'quants' %}">Quants</a></li>
+                      <li><a class="dropdown-item" href="/companies/{{data}}/">Verbal</a></li>
+                      <li><a class="dropdown-item" href="/companies/{{data}}/">Logical</a></li>
+                      <li><a class="dropdown-item" href="/companies/{{data}}/">Data Interpretation</a></li>
+                      <li><a class="dropdown-item" href="/companies/{{data}}/">C</a></li>
+                      <li><a class="dropdown-item" href="/companies/{{data}}/">CPP</a></li>
+                      <li><a class="dropdown-item" href="/companies/{{data}}/">Networking</a></li>
+                      <li><a class="dropdown-item" href="/companies/{{data}}/">DSA</a></li>
+                      <li><a class="dropdown-item" href="/companies/{{data}}/">DBMS</a></li>
+                      <li><a class="dropdown-item" href="/companies/{{data}}/">SQL</a></li>
+                      <li><a class="dropdown-item" href="/companies/{{data}}/">SDLC</a></li>
+                      <li><a class="dropdown-item" href="/companies/{{data}}/">MS Office</a></li>
+                      <li><a class="dropdown-item" href="/companies/{{data}}/">Cloud Computing</a></li>
+                 
+                      
+                
+          </ul>
+      </li>
+  
+      </ul>
+      <ul class="navbar-nav" style="font-size: 15px;">
+        <li class="nav-item dropdown" >
+            <a class="nav-link"  id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-building-o"></i> Companies </a>
+            <ul class="dropdown-menu pull-left" aria-labelledby="navbarDropdownMenuLink" style="font-size: 13px; max-height:450px; overflow-y:scroll;">
+          
+                    
+                        {% for data in companies %}
+                        <li><a class="dropdown-item" href="/companies/{{data}}/">{{data}}</a></li>
+                        {% endfor %}
+                        
+                  
+            </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+    <div id="page-content-wrapper" style=" overflow-x:hidden ;">
+     
+        <div class="container-fluid" style="width:100%;">
+            <div class="tab-content mt-5" id="v-pills-tabContent">
+                <div class="tab-pane fade show active border-0"  id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+
+                    <div class=" card-body" style="min-height:560px;" >
+                        <div style="display: flex; justify-content: flex-start;">
+                            <div class="shadow-sm" >
+                                    {% if data.logo.0 %}
+                                    <img src="{{data.logo.1}}" style="height: 80px; width: 80px; border: 2px solid rgb(0,0,0,0.1); border-radius: 5px;">
+                                    {%else%}
+                                    <img src=" " style="height: 80px; width: 80px;">
+                                    {% endif %}
+                            </div>
+                            <div class="mt-4 ml-3">
+                                <div>
+                                    <h3 style="font-weight: 600;">{{data.name}}</h3>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; " >
+                                    <div style="display: flex; justify-content: flex-start; ">
+                                    <h6>{{data.rating.rating}}</h6>
+                                    <span class="ml-2">{{data.rating.stars|safe}}</span>
+                                    <span class="ml-2">{{data.rating.addition}}</span>
+                                </div>
+                                <div style="display: flex; justify-content: flex-end; " class="ml-5">
+                                    <a href="#" class="ml-2"><i class="fa fa-briefcase"></i> Open Jobs</a>
+                                    <a href="#" class="ml-3"><i class="fa fa-bar-chart"></i> Salaries</a>
+                                    <a href="#" class="ml-3"><i class="fa fa-paper-plane"></i> Compare</a>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <p class="text-muted" style="font-size: 14px; font-weight: 500;">
+                                {{data.rating.information}}
+                            </p>
+                        </div>
+                        <div class="mt-3">
+                            <p style="font-color:#000; font-weight: 550; font-size: 17px;">
+                                {{data.information}}
+                            </p>
+                        </div>
+        
+                    </div>
+
+                </div>
+                <div class="tab-pane fade =border-0" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+
+                    <div class=" card-body" style="min-height:560px;">
+                        {{name.syll|safe}}
+                    </div>
+                </div>
+                <div class="tab-pane fade  border-0" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                    <div class=" card-body" style="min-height:560px;">
+                        {{name.pattern|safe}}
+                    </div>
+                </div>
+                <div class="tab-pane fade border-0" id="v-pills-exp" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                    <div class=" card-body" style="min-height:560px;">
+                      {{name.experience|safe}}
+                      </div>
+                </div>
+                <div class="tab-pane fade" id="v" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                    <div class="container">
+                        <div class="row mt-2" style="width:100%;">
+                            <div class="col-12 pl-5 pr-5  border-0" id="myTable" style="width:100%;" >
+                              <div class="card-body" style="width:100%;" >
+                            <div class="pl-5 pr-5" style="display: flex; justify-content: space-between; width:100%;">
+                                <h2 id="topic" class="text-muted"> 
+
+                                </h2>
+                                {% for i in topic %}
+                                <div id="{{i.0}}1"style="display: none;">
+                                  <a class="  btn btn-sm border shadow-sm text-muted btn-outline-default" href="#"  id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-filter" aria-hidden="true"></i> Topics  </a>
+                                  <ul id="topic_name" class="dropdown-menu pull-left" aria-labelledby="navbarDropdownMenuLink" style="font-size: 13px; max-height:450px; overflow-y:scroll;">
+          
+                                    <div id="myBtnContainer" style="font-size: 13px;">
+                                      <li><a style="font-size: 13px;" class="btn active" onclick = "fetch('{{name.name}}','{{i.0}}','all')" class="dropdown-item" >All</a></li>
+                                    {% for data in i.1 %}
+                                    <li><a style="font-size: 13px;" class="btn" onclick = "fetch('{{name.name}}','{{i.0}}','{{data.topic_name}}')" class="dropdown-item" >{{data.topic_name}}</a></li>
+                                    {% endfor %}
+                                    </div>
+                                    
+                              
+                                </ul>
+                                </div>
+                                {% endfor %}
+                                
+                            </div>
+                            <div class="col-12 pl-5 pr-5 mt-4 " id="mcqs">
+                                
+                            </div>
+                          </div>
+                          </div> 
+                          <hr>
+                          <div class="col-12 border-top">
+                           
+                              <div class="mt-5">
+                                <h3 class="text-muted">
+                                  <i class="fa fa-university"></i> Mock Test Series <span class="badge badge-sm badge-warning"><i class="fa fa-star"></i> Premium</span>
+                                </h3>
+                              </div>
+                              <div class="mt-5" style="">
+                                
+                                {% for x in mock_data %}
+                              
+                                <div class="card shadow-sm mr-4 " >
+                                  
+                                    <span style="position:absolute; right:0;"  class=" m-1 badge badge-sm badge-warning"><i class="fa fa-star"></i> Premium</span>
+                                    
+                                    
+                                    <img src="{{data.logo.1}}" class="m-0 p-0 border-bottom" style="height:200px; width:100%;">
+                                   <div class="card-body">
+               
+                                     
+                                       <div style="font-size: 18px; " class="mt-2 text-muted">
+                                          
+                                               {{x.title}}
+                                       
+                                           
+                                       </div>
+                                       <div>
+                                         <p style="font-size: 13px ; " class="text-muted mt-1">
+                                           {{x.mock_name.all.count}} Test Series
+                                         </p>
+                                       </div>
+                                       <div style="position: absolute; bottom:65; right: 8;">
+                                        <a href="/mock_test/{{x.id}}/">
+                                          <div style="background-color: white; font-size: 20px;" class="border p-4 shadow-sm rounded-circle ">
+                                            <i class="fa fa-play ml-1"></i>
+                                          </div>
+                                        </a>
+
+                                       </div>
+
+                                   </div>
+                              
+                               </div>
+                               {% endfor %}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+
+                </div>
+               
+              </div>
+            
+        </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+
+
+     $("#menu-toggle").click(function(e) {
+ e.preventDefault();
+	var isIE11 = !!navigator.userAgent.match(/Trident.*rv\:11\./);
+	
+
+      
+
+
+
+        $("#toggleIcon").toggleClass("fa fa-angle-double-down fa fa-angle-double-up")
+        $("#wrapper").toggleClass("toggled");
+
+  	if(isIE11){
+          if($("#wrapper").hasClass("toggled")){
+	    $('#sidebar-wrapper').css("margin-left", "-268px")
+	  } else {
+	    $('#sidebar-wrapper').css("margin-left", "-250px")	
+          }	 
+	}
+    });
+
+    function fetch(company,method,cat){
+      var url = '/companies/'+company+'/'+method+'/'+cat+'/';
+
+      var req = new XMLHttpRequest(); 
+      req.onreadystatechange = function(){
+          if(this.readyState == 4 && this.status == 200){
+            var det = JSON.parse(req.responseText);
+            {% for i in topic %}
+               document.getElementById("{{i.0}}1").style.display = 'none';
+            {% endfor %}
+            document.getElementById('topic').innerHTML ="Practise " +det[1];
+            document.getElementById(det[1]+String(1)).style.display = 'block';
+           
+            var details = det[0];
+            var i;
+            var s = "";
+            for(i=0; i< details.length;i++){
+                var val = `
+                <div style="border:1px solid rgb(0,0,0,0.1); background-color:white; border-radius:5px;" class="mb-3 p-5 shadow-sm inbox filterDiv All`+details[i].topic+`" id="inbox`+details[i].id+`">
+                 
+                <div class="inbox-question" style="font-size:14px;">
+                    <p>
+                        Question `+String(i+1)+`:
+                        `+details[i].title+`
+                    </p>
+                </div>
+                <div class="inbox-option mt-4">
+                    <div class="row">
+
+                        <div class="col-12 col-md-6 mb-2">
+                            <button style="width:100%;" onclick="validate('`+details[i].id+`','A','`+String(i)+`')" id="sol`+String(i)+`A" class="btn btn-outline-secondary  pt-2 pb-2">`+details[i].A+`</button>
+                        </div>
+                        <div class="col-12 col-md-6 mb-2 ">
+                            <button style="width:100%;" onclick="validate('`+details[i].id+`','B','`+String(i)+`')" id="sol`+String(i)+`B" class="btn btn-outline-secondary  pt-2 pb-2">`+details[i].B+`</button>
+                        </div>
+                        <div class="col-12 col-md-6 mb-2 ">
+                            <button style="width:100%;" onclick="validate('`+details[i].id+`','C','`+String(i)+`')" id="sol`+String(i)+`C" class="btn btn-outline-secondary pt-2 pb-2">`+details[i].C+`</button>
+                        </div>
+                        <div class="col-12 col-md-6 mb-2 ">
+                            <button style="width:100%;" onclick="validate('`+details[i].id+`','D','`+String(i)+`')" id="sol`+String(i)+`D" class="btn btn-outline-secondary pt-2 pb-2">`+details[i].D+`</button>
+                        </div>
+                        
+                    </div>
+                   
+                   
+                </div>
+                <div class="inbox-solution mb-1">
+                    <div style="display: flex; justify-content: flex-end;">
+                        <p>
+                        <button style=" " class="btn btn-sm  shadow-sm mr-3" type="button" data-toggle="collapse" data-target="#collapseExample`+String(i)+`" aria-expanded="false" aria-controls="collapseExample">
+                           <i class=" fa fa-check"></i> Solution
+                          </button>
+                        </p>
+                    
+                        
+                    </div>
+                    <div class="collapse mt-2" id="collapseExample`+String(i)+`">
+                        <div class="card card-body" style="width:100%; height:auto;" >
+                        <p>
+                            Solution : `+details[i].sol+`
+                        </p>
+                        <p>
+                                `+details[i].explain+`
+                        </p>
+                        </div>
+                      </div>
+                </div>
+            </div>`;
+
+            s  = s+ val;
+            }
+
+          
+            document.getElementById('mcqs').innerHTML = s;
+
+            
+
+          }
+        };
+        req.open("GET",url,true);
+        req.send();
+    }
+</script>
+{% endblock %}

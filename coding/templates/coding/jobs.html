@@ -3,15 +3,68 @@
 {% block navbar %}
 {% include 'coding/header.html' %}
 {% endblock %}
+{% block script %}
+<script>
+    function information(company){
+      var url = '/company/information/'+company+'/';
 
+      var req = new XMLHttpRequest(); 
+      req.onreadystatechange = function(){
+          if(this.readyState == 4 && this.status == 200){
+            var details = JSON.parse(req.responseText);
+            console.log(details);
+            if (details['logo'][0] == true){
+                document.getElementById('image').innerHTML = "<img style='width:70px; height:70px;' src="+details['logo'][1]+'>';
+            }
+            else{
+                document.getElementById('image').innerHTML = "<img style='width:70px; height:70px;' alt='?'>" ;
+            }
+            
+            document.getElementById('name').innerHTML = details['name'];
+            document.getElementById('rating').innerHTML = '<span style="margin-right:4px;">'+details['rating']['rating']+'</span>'+details['rating']['stars']+' '+details['rating']['addition'];
+            
+            document.getElementById('info').innerHTML = '<p style="font-size:12px; color:#888888;">'+details['rating']['information']+'</p>';
+            document.getElementById('information').innerHTML = '<p>'+details['information'] +'</p>';
+          }
+        };
+        req.open("GET",url,true);
+        req.send();
+    }
+</script>
+{% endblock %}
+
+{% block style %}
+.checked {
+    color: orange;
+  }
+{% endblock %}
 {% block body %}
 <div class="container">
     <div class="row">
-        <div class="col-12 col-xl-5">
+        <div class="col-12">
+            <div class="mt-5 mb-5">
+                <form method = 'POST' action="{% url 'scrapper' %}" style="display: flex; justify-content: space-between;">
+                    {% csrf_token %}
+                    <input style="width:50%;" required type="text" class="form-control bg-light border-0 small mr-2" name="job" placeholder="Job Title, keywords, or company" aria-label="Search" aria-describedby="basic-addon2" id="myinput">
+                    <input type="text" required style="width:40%;" class="form-control bg-light border-0 small mr-2" name="location" placeholder="City, State, or pin code" aria-label="Search" aria-describedby="basic-addon2" id="myinput2">
+                    <button type="submit" class="btn btn-sm btn-outline-warning">Find Jobs</button>
+                      
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        
+        <div class="col-12 col-xl-8">
             <div class="inbox mt-5">
+
+                
+
+
+
                 {% for data in jobs %}
                                                 <!-- Card -->
-                            <div class="card promoting-card mb-3">
+                            <div class="card shadow promoting-card mb-3">
 
                                 <!-- Card content -->
                                 <div class="card-body d-flex flex-row">
@@ -22,7 +75,7 @@
                                     <!-- Title -->
                                     <h4 class="card-title font-weight-bold mb-2">{{data.title}}</h4>
                                     <!-- Subtitle -->
-                                    <p class="card-text" ><i class="far fa-clock pr-2"></i>{{data.company.company}}</p>
+                                    <p class="card-text" ><a href="#" onclick="information('{{data.company.company}}')"><i class="far fa-clock pr-2"></i>{{data.company.company}}</a></p>
                                     <p class="card-text" style="margin-top: -20px;"><i class="far fa-clock pr-2"></i>{{data.company.location}}</p>
                             
                                 </div>
@@ -56,6 +109,34 @@
                             <!-- Card -->
                 {% endfor %}
             </div>
+        </div>
+        <div class="col-12 col-xl order-first order-md-last">
+            <div class="mt-5">
+            <div class="card shadow promoting-card mb-3">
+                <div class="card-body">
+                    <div style="display: flex; justify-content: flex-start; ">
+                        <div id="image">
+                           
+                        </div>
+                        
+                        <div style="display:flex; flex-direction: column; margin-left:6px;" >
+                            <div id="name" style="font-size:24px; font-weight:600; ">
+
+                            </div>
+                            <div id="rating">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div id="info">
+
+                    </div>
+                    <div id="information">
+
+                    </div>
+                </div>
+            </div>
+        </div>
         </div>
     </div>
 </div>

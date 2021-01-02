@@ -1,0 +1,100 @@
+{% extends 'coding/base.html' %}
+{% load shortcut %}
+{% block navbar %}
+{% include 'coding/header.html' %}
+{% endblock %}
+{% block style %}
+.tablt a{
+    display:flex;
+    
+    flex-direction:row;
+
+}
+.nav .active{
+ border-bottom:3px solid #FFA500;
+}
+.tags:hover{
+    background-color:#FFA500;
+    color:white;
+}
+{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-12 mt-5">
+            <center>
+           <p class="" style="color:#FFA500;font-size: 25px;">
+               Welcome to our project centre. 
+           </p>
+        </center>
+           <center>
+           <p class="text-muted">
+            We provide free projects to learn programming languages like C,C++,Java, Python , Machine Learning, Django and other computer subjects like Data Structure, DBMS, SQL. etc 
+            </p>. 
+        </center>
+        </p>
+        <hr>
+        </div>
+
+        <div class="col-12">
+            <div class="tablt " style="display: flex; justify-content: space-around;" >
+                
+                <nav>
+                    <div class="nav " id="nav-tab" role="tablist">
+                        {% for data in category %}
+                        
+                    
+                      <a  class="nav-item nav-link {% if forloop.counter == 1%} active {% endif %} text-muted"  id="navh{{data.id}}" data-toggle="tab" href="#navtb{{data.id}}" role="tab" aria-controls="nav-home" aria-selected="true">{{data.name}}</a>
+                      {% endfor %}
+                    </div>
+                  </nav>
+                
+                
+               
+            </div>
+            
+        </div>
+        <div class="col-12">
+            <div class="tab-content mt-5" id="nav-tabContent">
+                {% for data in category %}
+                <div class="tab-pane fade {% if forloop.counter == 1%} show active {% endif %}" id="navtb{{data.id}}" role="tabpanel" aria-labelledby="nav-home-tab">
+                    {% if data.languagecategory.all.count  == 0 %}
+                    <center>
+                    <p class="text-muted " style="margin-top: 150px;">
+                        We don't have projects under this category right now.
+                    </p>
+                </center>
+                    {% else %}
+                    {% for df in data.languagecategory.all %}
+                    <div class="card mt-2" style="width: 100%; border-left:4px solid #FFA500">
+                        <div class="card-body">
+                            <div style="display: flex; justify-content: flex-end;">
+                                <a class="mr-2" href="{{df.link}}" style="text-decoration: none; color:#FFA500;"><i class="fa fa-arrow-down" aria-hidden="true"></i> Download Source Code</a>
+                                
+                             
+                            </div>
+                           <h5 class="text-muted">{{forloop.counter}}. {{df.title}}</h5> 
+                           <div class="mb-2">
+                               {% for i in df.tags|json %}
+                                    <a class="tags" style="font-size: 11px; border:1px solid #FFA500; border-radius: 3px; padding:3px;">{{i}}</a>
+                               {% endfor %}
+                           </div>
+                           <div >
+    
+                           
+                           <p style="font-size: 14px; "class="text-muted">{{df.description|safe}}</p>
+    
+                        </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                {% endfor %}
+              </div>
+        </div>
+    </div>
+
+
+</div>
+{% endblock %}

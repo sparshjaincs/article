@@ -1,0 +1,343 @@
+{% extends 'coding/base.html' %}
+{% load shortcut %}
+{% block navbar %}
+{% include 'coding/header.html' %}
+{% endblock %}
+{% block style %}
+#wrapper {
+  padding-left: 250px;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+  padding-left: 0px;
+}
+
+
+#sidebar-wrapper {
+  
+        overflow-y:scroll;
+		    position: fixed;
+  
+                    left: 250px;
+  
+                    width: 250px;
+  
+                    height: 100%;
+  
+                    margin-left: -250px;
+                    margin-top:-10px;
+                    overflow-y: scroll;
+
+  		    overflow-x: hidden;
+          background-color:#262B40; 
+            
+  
+		    -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+		
+}
+
+
+#wrapper.toggled #sidebar-wrapper {width: 0px;
+}
+
+
+#page-content-wrapper {
+  width: auto;
+  position: absolute;
+  padding: 50px;
+}
+
+
+#wrapper.toggled #page-content-wrapper {
+  position: absolute;
+  margin-right: -250px;
+  width:100%;
+}
+
+
+
+
+/* Sidebar Styles */
+
+
+.sidebar-nav {
+  position: absolute;
+  top: 0;
+  width: 250px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border:none;
+}
+
+
+.sidebar-nav li {
+  text-indent: 20px;
+  line-height: 60px;
+}
+
+
+.sidebar-nav li a {
+  display: block;
+  text-decoration: none;
+  color: white  ;
+
+}
+
+
+.sidebar-nav li a:hover {
+  text-decoration: none;
+  color: #000;
+  background: rgba(0,0,0, 0.1);
+}
+
+
+.sidebar-nav li a:active, .sidebar-nav li a:focus {
+
+  text-decoration: none;
+  background-color:#3A3F48;
+}
+
+
+.sidebar-nav>.sidebar-brand {
+  height: 70px;
+  
+  
+  
+}
+
+.sidebar-nav>.sidebar-brand a {
+  color:white;
+  font-size:20px;
+}
+
+
+.sidebar-nav>.sidebar-brand a:hover {
+  color: white;
+  background: none;
+}
+
+
+/**
+
+@media(min-width:768px) {
+  
+#wrapper {
+    padding-left: 0;
+  }
+  
+#wrapper.toggled {
+    padding-left: 0px;
+  }
+  
+#sidebar-wrapper {
+    width: 100px;
+    margin-top:-10px;
+  }
+  
+#wrapper.toggled 
+#sidebar-wrapper {
+    width: 250px;
+  }
+  
+#page-content-wrapper {
+    padding-left: 50px;
+    position: relative;
+  }
+  
+#wrapper.toggled #page-content-wrapper {
+    position: relative;
+    margin-right: 0;
+ padding-left: 35px; }
+
+}
+
+**/
+
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: black;
+    color: white;
+    text-align: center;
+}
+
+.row {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+.checked {
+    color: orange;
+  }
+.side .active{
+  border-left:2px solid #5BC0DE;
+}
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link{
+  border:none;
+  color:white;
+  opacity:0.7;
+  margin-left:13px;
+  margin-right:20px;
+  margin-bottom:5px;
+  padding:12px;
+  border-radius:5px;
+  letter-spacing:0.5px;
+  font-weight:500;
+  font-size:15px;
+  }
+  .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link:hover{
+border:none;
+
+opacity:1;
+background-color:#2E3650;
+
+}
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+  
+  border:none;
+  
+  border-radius:5px;
+  color:white;
+  background-color:#2E3650;
+  letter-spacing:0.5px;
+  opacity:1;
+}
+.card{
+  width:250px;
+  height:300px;
+  border-radius:5px;
+  <!--background:linear-gradient(330deg, #753a88, #cc2b5e);-->
+
+}
+{% endblock %}
+{% block body%}
+
+  <!-- Static navbar -->
+
+
+<div id="wrapper" style="background-color: white;" >
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper" class="shadow" style="">
+        <ul class="sidebar-nav nav-tabs " id="nav-tab" role="tablist">
+            <li class="sidebar-brand">
+                <div style="">
+                  
+                    <div>
+                      <center>
+                    <a href="#" style="" class="mr-4 mt-3">
+                        <span id="comp">Company</span> Syllabus
+                    </a>
+                  </center>
+                </div>
+                </div>
+               
+            </li>
+            <div class="ml-0 mb-4 mt-3" style="color: white; font-size: 18px; opacity: 0.7;">
+              <center> <i class="fa fa-building-o"></i> Companies</center>
+             </div>
+            <div class="nav flex-column side" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                
+                {% for i in companies %}
+                <a onclick = "fetch('{{i.company_name}}','{{i}}','all')" class="nav-link {% if forloop.counter == 1%}active{%endif%}" id="v-pills-settings-tab{{forloop.counter}}" data-toggle="pill" href="#v" role="tab" aria-controls="v-pills-settings" aria-selected="false">{{i}}</a>
+                {% endfor %}
+            </div>
+        
+           
+          
+
+        </ul>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <nav class="navbar shadow navbar-expand-lg navbar-light bg-white pt-2" style=" position: fixed; width: 100%; z-index:1000; height:45px; border-bottom:1px solid rgb(0,0,0,0.1); margin-top: -10px;">
+    <a class="navbar-brand" href="#">
+        <button id="menu-toggle" class="btn btn-default">
+           <i class="fa fa-bars
+
+            "></i></button>  
+    </a>
+  
+    <div class="collapse navbar-collapse  " id="navbarNav">
+      <ul class="navbar-nav" style="font-size: 14px;">
+        <li class="nav-item">
+          <a class="nav-link mr-3" href="{% url 'mock_test' %}"><i class="fa fa-university"></i> Mock Test Series </a>
+        </li>
+        
+        <li class="nav-item">
+          <a class="nav-link mr-3" href="/companies/"><i class="fa fa-building-o"></i> Prepare Company-wise</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link mr-3" href="/companies/interview/"><i class="fa fa-history"></i> Interview Experience</a>
+        </li>
+      </ul>
+     
+    </div>
+  </nav>
+    <div id="page-content-wrapper" class="mt-5">
+        <div id="myTable">
+            {{data|safe}}
+        </div>
+       
+    </div>
+    <!-- /#page-content-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+
+
+{% endblock %}
+
+{% block script %}
+
+<script>
+
+
+     $("#menu-toggle").click(function(e) {
+ e.preventDefault();
+	var isIE11 = !!navigator.userAgent.match(/Trident.*rv\:11\./);
+	
+
+      
+
+
+
+        $("#toggleIcon").toggleClass("fa fa-angle-double-down fa fa-angle-double-up")
+        $("#wrapper").toggleClass("toggled");
+
+  	if(isIE11){
+          if($("#wrapper").hasClass("toggled")){
+	    $('#sidebar-wrapper').css("margin-left", "-268px")
+	  } else {
+	    $('#sidebar-wrapper').css("margin-left", "-250px")	
+          }	 
+	}
+    });
+ window.onload = fetch('Accenture');
+    function fetch(company,method,cat){
+      var url = '/companies/fetch/syllabus/'+company+'/syll/';
+
+      var req = new XMLHttpRequest(); 
+      req.onreadystatechange = function(){
+          if(this.readyState == 4 && this.status == 200){
+            var det = JSON.parse(req.responseText);
+            console.log(det);
+            document.getElementById('myTable').innerHTML = det['syllabus'];
+            
+          }
+        };
+        req.open("GET",url,true);
+        req.send();
+    }
+</script>
+{% endblock %}

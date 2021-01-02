@@ -6,10 +6,14 @@ from django.dispatch import receiver
 from datetime import datetime
 from ckeditor.fields import RichTextField
 from django.contrib.contenttypes.fields import GenericRelation
+#from .views import current_user as cu
 # Create your models here.
 
 class Categories(models.Model):
-    category_name = models.CharField(max_length=40, unique=True,default="")
+    CHOICES = (('All','All'),
+		('Quants', 'Quants'),('Verbal', 'Verbal'),('Logical','Logical'))
+    choice = models.CharField(max_length=1000,choices=CHOICES,default="All")
+    category_name = models.CharField(max_length=40, unique=True)
     def __str__(self):
         return self.category_name
 
@@ -20,7 +24,7 @@ class Articles(models.Model):
     METHOD_CHOICES = (
 		('content', 'content'),('design', 'design'),('editor','editor'))
     user_name2 = models.ForeignKey(User, related_name='project_username_2', to_field='username', on_delete=models.CASCADE)
-    title = models.CharField(max_length=150,default=" ",blank=False,unique=True)
+    title = RichTextField(default=" ",blank=False,unique=True)
     project_name = models.CharField(max_length=100, blank=False , null=False)
     author = models.CharField(max_length=50,blank=True)
     date_Publish = models.DateField(default=datetime.now)
@@ -79,27 +83,49 @@ class Anwsers(models.Model):
         return str(self.question)
 
 
+class Discussion_comment(models.Model):
+    user_discussion = models.ForeignKey(User, related_name='user_discussion_1', to_field='username', on_delete=models.CASCADE,default="")
+    post = models.ForeignKey(Anwsers, related_name='discussion',on_delete=models.CASCADE)
+    parent = models.ForeignKey('self',null=True,blank=True,on_delete=models.CASCADE)
+    body = models.CharField(max_length=100000,blank=True)
+    created = models.DateTimeField(auto_now_add=True,null=True)
+    active = models.BooleanField(default=True)
+    class Meta:
+        ordering = ('-created',)
+    def children(self):
+        return Discussion_comment.objects.filter(parent=self)
+
+    @property
+    def is_parent(self):
+        if self.parent is not None:
+            return False
+        return True
+    def __str__(self):
+        return self.post.question.title
+
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=50, blank=True,default="---")
-    last_name = models.CharField(max_length=50, blank=True,default="---")
-    email = models.EmailField(max_length=50, blank=True,default="---")
-    phone_number = models.CharField(max_length=13, blank=True,default="---")
+    first_name = models.CharField(max_length=50, blank=True,default="")
+    last_name = models.CharField(max_length=50, blank=True,default="")
+    email = models.EmailField(max_length=50, blank=True,default="")
+    phone_number = models.CharField(max_length=13, blank=True,default="")
     avatar = models.ImageField(upload_to='users/images',blank=False,default = 'users/images/default.jpg')
-    bio = models.TextField(blank=True,default="---")
-    address = models.CharField(max_length=50, blank=True,default="---")
-    city = models.CharField(max_length=50, blank=True,default="---")
-    state  = models.CharField(max_length=50, blank=True,default="---")
-    country = models.CharField(max_length=50, blank=True,default="---")
-    date_of_birth = models.CharField(max_length=13, blank=True,default="---")
+    headline = models.CharField(max_length=1000, blank=True,default="")
+    bio = models.TextField(blank=True,default="")
+    address = models.CharField(max_length=50, blank=True,default="")
+    city = models.CharField(max_length=50, blank=True,default="")
+    state  = models.CharField(max_length=50, blank=True,default="")
+    country = models.CharField(max_length=50, blank=True,default="")
+    date_of_birth = models.CharField(max_length=13, blank=True,default="")
     follow = models.ManyToManyField(User,default=None,blank=True,related_name="follow_title")
     following = models.ManyToManyField(User,default=None,blank=True,related_name="following_title")
     signup_confirmation = models.BooleanField(default=False)
     instagram = models.CharField(max_length=1000,blank=True,null=True)
     facebook = models.CharField(max_length=1000,blank=True,null=True)
     twitter = models.CharField(max_length=1000,blank=True,null=True)
- 
+    college = models.CharField(max_length=1000, blank=True,default="")
     medium = models.CharField(max_length=1000,blank=True,null=True)
     quora = models.CharField(max_length=1000,blank=True,null=True)
     other = models.CharField(max_length=1000,blank=True,null=True)
@@ -173,18 +199,27 @@ class titleview(models.Model):
 
 
 class Topic(models.Model):
+    CHOICES = (('All','All'),
+		('Quants', 'Quants'),('Verbal', 'Verbal'),('Logical','Logical'))
+    choice = models.ForeignKey(Categories,related_name="catview",to_field='category_name',on_delete=models.CASCADE,default="All")
     topic_name = models.CharField(max_length=40, unique=True,default="")
     def __str__(self):
         return self.topic_name
 
 class Company(models.Model):
-    company_name = models.CharField(max_length=40, unique=True,default="")
-    def __str__(self):
+    company_name = models.CharField(max_length=100, unique=True,default="")
+    def __str__(self): 
         return self.company_name
-class CategoryList(models.Model):
-    category_name = models.CharField(max_length=40, unique=True,default="")
+
+class Syllabus(models.Model):
+    name = models.ForeignKey(Company,related_name="companies",to_field='company_name',on_delete=models.CASCADE)
+    side_data = models.TextField(blank=False,null=True)
+    pattern = RichTextField(blank=True,null=True)
+    syll = RichTextField(blank=True,null=True)
+    experience = RichTextField(blank=True,null=True)
     def __str__(self):
-        return self.company_name
+        return self.name.company_name 
+
 
 class Aptitude(models.Model):
     question_id = models.AutoField(primary_key=True)
@@ -192,7 +227,7 @@ class Aptitude(models.Model):
 		('A', 'A'),('B', 'B'),('C', 'C'),('D', 'D'))
     DIFF_CHOICES = (
 		('Easy', 'Easy'),('Medium', 'Medium'),('Hard', 'Hard'))
-    question = models.TextField(blank=True,default="")
+    question = RichTextField(blank=False,null=True)
     A = models.TextField(blank=True,default="")
     B = models.TextField(blank=True,default="")
     C = models.TextField(blank=True,default="")
@@ -223,6 +258,17 @@ class List(models.Model):
     date = models.DateField(default=datetime.now)
     def __str__(self):
         return self.heading
+
+class Job_Search(models.Model):
+    user = models.ForeignKey(User,related_name="User_Jobs",to_field="username",on_delete=models.CASCADE)
+    title = models.CharField(max_length=1000,blank = True)
+    location = models.CharField(max_length=1000,blank = True)
+    def __str__(self):
+        return str(self.user)
+
+    class Meta:
+        unique_together = ('title','location')
+
 
 
  

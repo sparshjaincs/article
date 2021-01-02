@@ -1,11 +1,194 @@
-{% extends 'coding/base.html' %}
-{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+            <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+           
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+  <title>Document</title>
+  <style>
+    .jumbotron{
+    margin-top:-10px;
+    height:775px;
+    background: linear-gradient(330deg, #753a88, #cc2b5e);
+    border-radius:0px;
+}
+.nav .active{
+  border-bottom:3px solid #cc2b5e;
+  color:#cc2b5e;
+}
+.nav{
+  font-size: 18px;
+  font-weight: 400;
+  color:black;
+}
+.nav-item a{
+  color:black;
+}
+  </style>
 
-{% block navbar %}
+</head>
+<body>
+<section>
+<div class="container-fluid">
+  <div class="row mt-5">
+   
+<nav class="navbar navbar-expand-md navbar-light bg-white fixed-top" style="height:50px; border-bottom: 1px solid rgb(0,0,0,0.1); ;">
+  <div class="container-fluid">
+  <a class="navbar-brand pb-2" href="/">CodingAlphas</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse justify-content-between" id="navbarNavDropdown" style="font-size: 14px;">
+      <ul class="navbar-nav">
+        
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'coding' %}">Explore</a>
+        </li>
+          <li class="nav-item dropdown" >
+              <a class="nav-link dropdown-toggle"  id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Aptitude </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" style="font-size: 13px;">
+                
+                
+                <li><a class="dropdown-item" href="{% url 'aptitude' %}">Practise All</a></li>
+                  <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" >All Companies</a>
+                      <ul class="dropdown-menu" style="font-size: 13px; max-height:450px; overflow-y:scroll ;">
+                        <li><a class="dropdown-item" href="{% url 'companywise' %}">All Companies</a></li>
+                          {% for data in companies %}
+                          <li><a class="dropdown-item" href="/companies/{{data}}/">{{data}}</a></li>
+                          {% endfor %}
+                          
+                      </ul>
+                  </li>
+                  <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" >Aptitude</a>
+                    <ul class="dropdown-menu" style="font-size: 13px;">
+                        <li><a class="dropdown-item" href="{% url 'quants' %}">Quants</a></li>
+                        <li><a class="dropdown-item" href="{% url 'verbal' %}">Verbal</a></li>
+                        <li><a class="dropdown-item" href="{% url 'logical' %}">Logical</a></li>
+                        <li><a class="dropdown-item" href="{% url 'interpretation' %}">Data Interpretation</a></li>
+                        <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#">Technical</a>
+                          <ul class="dropdown-menu" style="font-size: 13px;">
+                              <li><a class="dropdown-item" href="#">C MCQ's</a></li>
+                              <li><a class="dropdown-item" href="#">CPP MCQ's</a></li>
+                              <li><a class="dropdown-item" href="#">DBMS MCQ's</a></li>
+                              <li><a class="dropdown-item" href="#">Operating System MCQ's</a></li>
+                              <li><a class="dropdown-item" href="#">SDLC MCQ's</a></li>
+                              <li><a class="dropdown-item" href="#">Networking MCQ's</a></li>
+                              <li><a class="dropdown-item" href="#">MS Word MCQ's</a></li>
+                          </ul>
+                      </li>
+                      
+                       
+                        
+                    </ul>
+                </li>
+                <!--
+                <li class="dropdown-submenu"><a class="dropdown-item dropdown-toggle" >Programming</a>
+                  <ul class="dropdown-menu" style="font-size: 13px;">
+                      <li><a class="dropdown-item" href="#">Top 100 Codes</a></li>
+                      <li><a class="dropdown-item" href="#">C Language</a></li>
+                      <li><a class="dropdown-item" href="#">C</a></li>
+                      <li><a class="dropdown-item" href="#">CPP MCQ's</a></li>
+                      <li><a class="dropdown-item" href="#">C MCQ's</a></li>
+                      <li><a class="dropdown-item" href="#">CPP MCQ's</a></li>
+                      <li><a class="dropdown-item" href="#">C MCQ's</a></li>
+                      <li><a class="dropdown-item" href="#">CPP MCQ's</a></li>
+                     
+                      
+                  </ul>
+              </li>
+              -->
+              <li><a class="dropdown-item" href="{% url 'syllabus' %}">Syllabus</a></li>
+              <li><a class="dropdown-item" href="{% url 'interview' %}">Interview Experience</a></li>
+              
+              </ul>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="{% url 'coding' %}">Coding</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'mock_test' %}">Mock</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Contest</a></li>
+            <li class="nav-item">
+              <a class="nav-link " href="{% url 'scrapper' %}">Jobs</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link " href="{% url 'discussion' %}">Q/A</a>
+              </li>
+              <!--
+              <li class="nav-item">
+                <a class="nav-link " href="{% url 'discussion' %}">Notes</a>
+              </li>
 
-{% include 'coding/header.html' %}
-{% endblock %}
-{% block body %}
+              <li class="nav-item">
+                <a class="nav-link " href="{% url 'project' %}">Projects</a>
+              </li>
+              -->
+              <li class="nav-item">
+                <a class="nav-link " href="{% url 'blogs' %}">Blog</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'coding' %}">Subscription</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'coding' %}">Developer</a>
+              </li>
+            </ul>
+            <ul class="navbar-nav">
 
+        
+          {% if request.user.is_authenticated %}
+          <li class="nav-item dropdown ml-auto">
+            <a class="nav-link mt-1 mr-2 border-right" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-bell-o"></i>  
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink" style="font-size: 13px; width:400px; height:300px; padding:10px;">
+              <div style="">
+              <div class="border-bottom" style="height:250px;">
 
-{% endblock %}
+              </div>
+              <div style="display: flex; justify-content: center;">
+                <a class="mt-2" style="text-decoration: none; color:#C92C60;"> Read More..</a>
+              </div>
+            </div>
+            </div>
+          </li>
+        <li class="nav-item dropdown ml-auto" style="display: flex; flex-direction: row;">
+          <a class="mt-1">
+            <img src="/media/{{user.profile.avatar}}" style="width:30px; border-radius:50%">
+          </a>
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{request.user}}
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink" style="font-size: 13px;">
+            <a class="dropdown-item" href="{% url 'profile' %}"><i class="fa fa-user-o" aria-hidden="true"></i> Profile</a>
+            <a class="dropdown-item" href="{% url 'bookmark' %}"><i class="fa fa-bookmark-o" aria-hidden="true"></i> Bookmarks</a>
+            <a class="dropdown-item" href="{% url 'notebook' %}"> 
+              <i class="fa fa-sticky-note-o" aria-hidden="true"></i> Notebook</a>
+            <a class="dropdown-item" href="{% url 'playground' %}"> <i class="fa fa-code"></i>
+              PlayGround</a>
+              <a class="dropdown-item" href="{% url 'playground' %}"> <i class="fa fa-bell-o" aria-hidden="true"></i>
+               Activity Centre</a>
+            <a class="dropdown-item" href="{% url 'profile' %}"><i class="fa fa-bar-chart" aria-hidden="true"></i> Progress</a>
+            <a class="dropdown-item" href="{% url 'logout' %}"> <i class="fa fa-sign-out" aria-hidden="true"></i> Sign Out</a>
+          </div>
+        </li>
+
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link " href="{% url 'login' %}">Sign In</a>
+        </li>
+        {% endif%}
+      </ul>
+  </div>
+</div>
+</nav>
+  </div>
+</div>
+</section>
+</body>
+</html>

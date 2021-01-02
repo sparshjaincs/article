@@ -1,23 +1,492 @@
 {% extends 'coding/base.html' %}
-
+{% load static %}
 {% block navbar %}
 {% include 'coding/header.html' %}
 {% endblock %}
+{% block style %}
+* { Box-sizing: Border-box }
+.mycontainer{
+  white-space: nowrap;
+  overflow-x: hidden;
+  width: 100%px;
+}
+.box{
+  display: inline-block;
+  border: 2px black solid;
+  padding: 20px;
+  width: 200px;
+  height: 100px;
+  vertical-align: top;
+  background-color: pink;
+}
+.box2{
+  background-color: yellow;
+}
 
+.companies{
+    font-size:30px; 
+    font-weight:600;
+    color:#6C757D;
+}
+.companies:hover{
+    color:black;
+    transition:2s ease;
+}
+a{
+    color:#696969;
+}
+
+.card1:hover{
+    border:1px solid rgb(249,168,38,0.4);
+
+    background-color:#FEF6EA;
+}
+.nav-pills .nav-item .nav-link{
+    width:100px;
+    display:flex;
+    justify-content:center;
+    margin-right:20px;
+}
+.nav-pills .nav-item .nav-link:hover{
+    
+  background-color:#FEF6EA;
+    color:#000;
+    
+}
+.nav-pills .nav-item .nav-link.active{
+    background-color:#FEF6EA;
+    color:black;
+}
+.tab-pane a{
+  font-weight:600;
+  margin-bottom:5px;
+}
+{% endblock %}
 {% block body %}
+<section style=" margin-top:-10px;  margin-bottom:230px;"> 
+    <div class="container">
+      <div style="position:absolute; height:50px; width:500px; background-color:#FEF6EA; transform:rotate(45deg); ">
+
+      </div>
+      <div style="position:absolute; height:50px; width:500px; background-color:#FEF6EA; transform:rotate(45deg); left:0;">
+  
+      </div>
+        <div style="position: absolute; right:20; ;" class="mt-5 ">
+            <img src="{% static 'coding/svg/undraw_co-working_825n.svg' %}" style="height:400px;">
+        </div>
+        <div class="row">
+            <div class="col-12 mt-5">
+                <div class="">
+                    <div class=" mt-5 pt-5">
+                        <span class="text-dark" style=" font-size: 38px; font-weight: 800; text-shadow: 2px 2px 20px  rgb(0,0,0,0.4);">
+                            Find The Job That Fits For You
+                        </span>
+                        
+                        
+                        
+                    </div>
+                </div>
+                <div class="mt-5 pt-3">
+                    <div>
+                        <form class="form-inline" action="/jobs/listing/" method="GET">
+                            <div class="form-group mr-2" style="width:32%;">
+                              
+                              <p class="text-muted" style="font-size: 12px;">Job Title, Keywords, Companies</p>
+                              <i class="fa fa-building-o text-muted" style="font-size:20px; position: absolute; margin-top:28px; margin-left:10px;"></i>
+                              <input  type="text" placeholder="" name="company" class="form-control" id="email" style=" width:100%; height:50px; padding-left:30px;">
+                            </div>
+                            <div class="form-group mr-2" style="width:32%;">
+                              <p class="text-muted" style="font-size: 12px;">City, State, Pin Code</p>
+                              <i class="fa fa-map-marker text-muted" style="font-size:24px; position: absolute; margin-top:28px; margin-left:10px;"></i>
+                              
+                              <input type="text" class="form-control" name="city" id="pwd" style="width:100%; height:50px; padding-left:30px;">
+                            </div>
+                            
+                            <button type="submit" class=" btn btn-default btn-outline-dark" style=" margin-top:30px ;height:50px; width:110px;"><i class="fa fa-search"></i> Find Jobs</button>
+                          </form>
+                    </div>
+                    <div class="text-muted">
+                        Popular Keywords :  Designer, Developer, Web, IOS, Python, Senior Engineer, SDE, Android
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<section >
 <div class="container">
     <div class="row">
-        <div class="col-12">
-            <div class="mt-5">
-                <form method = 'POST' action="" style="display: flex; justify-content: space-between;">
-                    {% csrf_token %}
-                    <input style="width:50%;" type="text" class="form-control bg-light border-0 small mr-2" name="job" placeholder="Job Title, keywords, or company" aria-label="Search" aria-describedby="basic-addon2" id="myinput">
-                    <input type="text" style="width:50%;" class="form-control bg-light border-0 small mr-2" name="location" placeholder="City, State, or pin code" aria-label="Search" aria-describedby="basic-addon2" id="myinput2">
-                    <button type="submit" class="btn btn-sm btn-outline-warning">Search</button>
+
+  
+            <div class="col-12 mt-5 mb-5 headline "  style=" ">
+                <!--
+                <div class="mycontainer">
+                    <input class="nextBtn btn btn-default " type="button" value="<">
+                    <div class="innerLiner">
+                      <span class="box">
+                        This is box1
+                        <input class="nextBtn" type="button" value="Next">
+                      </span>
+                  
                       
-                </form>
+                      <span class="box">
+                        This is box1
+                        <input class="nextBtn" type="button" value="Next">
+                      </span>
+                      <span class="box">
+                        This is box1
+                        <input class="nextBtn" type="button" value="Next">
+                      </span>
+                      <span class="box">
+                        This is box1
+                        <input class="nextBtn" type="button" value="Next">
+                      </span>
+                      <span class="box">
+                        This is box1
+                        <input class="nextBtn" type="button" value="Next">
+                      </span>
+                      <span class="box">
+                        This is box1
+                        <input class="nextBtn" type="button" value="Next">
+                      </span>
+
+                      <span class="box box2">
+                        This is box2
+                        <input class="backBtn" type="button" value="Back">
+                      </span>
+                    </div>
+                  
+                  </div>
+                  -->
+                  <div style="display: flex; justify-content: flex-start;">
+                    <a href="/jobs/listing/?company=microsoft&city=">
+                  <div class="companies mr-5">
+                      <i class="fa fa-windows"></i> Microsoft
+                  </div>
+                </a>
+                <a href="/jobs/listing/?company=google&city=">
+                  <div class="companies  mr-5 ml-5">
+                    <i  class="fa fa-google"></i> Google
+                </div>
+                </a>
+                <a href="/jobs/listing/?company=amazon&city=">
+                <div class="companies mr-5 ml-5">
+                    <i class="fa fa-amazon mt-"></i> Amazon
+               </div>
+            </a>
+            <a href="/jobs/listing/?company=facebook&city=">
+
+               <div class="companies  mr-5 ml-5">
+                <i class="fa fa-facebook"></i> Facebook
+                </div>
+                </a>
+
+                <a href="/jobs/listing/?company=apple">
+
+                <div class="companies  mr-5 ml-5">
+                    <i class="fa fa-apple"></i> Apple
+                    </div>
+                </div>
+            </a>
+
+
             </div>
         </div>
     </div>
-</div>
+</section>
+<section style="background-color: #FAF9F8; " class="pb-5">
+    <div class="container pb-5">
+        <div class="row">
+                <div class="col-12 mt-5 pt-5 pb-5">
+                    <p style="font-size: 24px; font-weight: 600; " class="text-dark">
+                        <i class="fa fa-briefcase"></i> Companies Hiring Now
+                    </p>
+                </div>
+               {% for i in data %}
+               <div class="col-12 col-md-6 col-xl-4 card card1 card-body" >
+                
+                    <div style="display: flex; justify-content: flex-start;">
+                  <div>
+                    <img src="{{i.logo}}" style="width:50px; height:50px; border-radius:5px;">
+                  </div>
+                  <div  class="ml-3" style="width:100%;">
+                    <div style="font-size: 16px;" class="text-muted ">
+                        {{i.name}}
+                    </div> 
+                  
+                      <div class="mt-3" style="display: flex; justify-content: flex-start;">
+                        <a data-toggle="tooltip" title="Apply For The Jobs That Is Suitable For You" class=" p-1" style="font-size: 10px;" href="/jobs/listing/?company={{i.name}}&city="><i class="fa fa-briefcase"></i> Open Jobs</a>
+                        <a data-toggle="tooltip" title="See The Details, Reviews Of Organisation"class=" p-1 " style="font-size: 10px;" href="/jobs/companies/{{i.name}}/?tab=detail"><i class="fa fa-info-circle"></i> Details</a>
+                        <a data-toggle="tooltip" title="Compare With Other Organisation"class=" p-1 " style="font-size: 10px;" href="/jobs/companies/{{i.name}}/?tab=compare "><i class="fa fa-exchange"></i> Compare</a>
+                        <a data-toggle="tooltip" title="See The Salary Trends"class=" p-1" style="font-size: 10px;" href="/jobs/companies/{{i.name}}/?tab=trend"><i class="fa fa-money"></i> Salary Trends</a>
+                      </div>
+                  </div>
+                
+
+
+                </div>
+               </div>
+                   
+               {% endfor %}
+            
+        </div>
+    </div>
+</section>
+
+<section class="mt-5 pt-5">
+   <div class="container">
+       <div class="row">
+           <div class="col-12 col-xl-9">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <p class="text-dark mb-5" style="font-size: 20px; font-weight:600;">Find Job Vacancies by</p>
+                    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                        <li class="nav-item">
+                          <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Skills</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Location</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Industry</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="pills-contact-tab1" data-toggle="pill" href="#pills-contact1" role="tab" aria-controls="pills-contact" aria-selected="false">Function</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" id="pills-contact-tab2" data-toggle="pill" href="#pills-contact2" role="tab" aria-controls="pills-contact" aria-selected="false">Roles</a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" id="pills-contact-tab3" data-toggle="pill" href="#pills-contact3" role="tab" aria-controls="pills-contact" aria-selected="false">Company</a>
+                          </li>
+                      </ul>
+                      <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                            <div style="display: flex; justify-content: space-between;" class="p-5">
+                              <div style="display: flex; flex-direction: column;">
+                                <a href="/jobs/listing/?company=Software Engineering&city=">Software Engineering Jobs</a>
+                                <a href="/jobs/listing/?company=Web Development&city=">Web Development Jobs</a>
+                                <a href="/jobs/listing/?company=C%23&city=">C# Jobs</a>
+                                <a href="/jobs/listing/?company=Azure&city=">Azure Jobs</a>
+                                <a href="/jobs/listing/?company=C++&city=">C++ Jobs</a>
+                                <a href="/jobs/listing/?company=Linux&city=">Linux Jobs</a>
+                                <a href="/jobs/listing/?company=Git&city=">Git Jobs</a>
+                                <a href="/jobs/listing/?company=Oracle&city=">Oracle Jobs</a>
+                                <a href="/jobs/listing/?company=Java&city=">Core Java Jobs</a>
+                                <a href="/jobs/listing/?company=Spring Boot&city=">Spring Boot Jobs</a>
+                                
+                                
+                              </div>
+                              <div style="display: flex; flex-direction: column;">
+                                <a href="/jobs/listing/?company=Javascript&city=">Javascript Jobs</a>
+                                <a href="/jobs/listing/?company=Java&city=">Java Jobs</a>
+                                <a href="/jobs/listing/?company=Python&city=">Python Jobs</a>
+                                <a href="/jobs/listing/?company=Html&city=">Html Jobs</a>
+                                <a href="/jobs/listing/?company=Cloud&city=">Cloud Jobs</a>
+                                <a href="/jobs/listing/?company=Agile&city=">Agile Jobs</a>
+                                <a href="/jobs/listing/?company=Production Engineer&city=">Production Engineer Jobs</a>
+                                <a href="/jobs/listing/?company=SQL&city=">SQL Jobs</a>
+                                <a href="/jobs/listing/?company=AWS&city=">AWS Jobs</a>
+                                <a href="/jobs/listing/?company=Angular&city=">Angular Jobs</a>
+                              </div>
+                              <div style="display: flex; flex-direction: column;">
+                                <a href="/jobs/listing/?company=Networking&city=">Networking Jobs</a>
+                                <a href="/jobs/listing/?company=.Net&city=">.Net Jobs</a>
+                                <a href="/jobs/listing/?company=Devops&city=">Devops Jobs</a>
+                                <a href="/jobs/listing/?company=Testing&city=">Testing Jobs</a>
+                                <a href="/jobs/listing/?company=HR&city=">HR Jobs</a>
+                                <a href="/jobs/listing/?company=Sales&city=">Sales Jobs</a>
+                                <a href="/jobs/listing/?company=Teaching&city=">Teaching Jobs</a>
+                                <a href="/jobs/listing/?company=Marketing&city=">Marketing Jobs</a>
+                                <a href="/jobs/listing/?company=PHP&city=">PHP Jobs</a>
+                                <a href="/jobs/listing/?company=Technical Support&city=">Technical Support Jobs</a>
+                              </div>
+                            </div>
+
+                        </div>
+                        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                          <div style="display: flex; justify-content: space-between;" class="p-5">
+                            <div style="display: flex; flex-direction: column;">
+                              <a href="/jobs/listing/?company=&city=Bangalore">Jobs in Bangalore</a>
+                              <a href="/jobs/listing/?company=&city=Noida">Jobs in Noida</a>
+                              <a href="/jobs/listing/?company=&city=Delhi NCR">Jobs in Delhi NCR</a>
+                              <a href="/jobs/listing/?company=&city=Coimbatore">Jobs in Coimbatore</a>
+                              <a href="/jobs/listing/?company=&city=Mumbai">Jobs in Mumbai</a>
+                             
+                            </div>
+                            <div style="display: flex; flex-direction: column;">
+                              <a href="/jobs/listing/?company=&city=Pune">Jobs in Pune</a>
+                              <a href="/jobs/listing/?company=&city=Chandigarh">Jobs in Chandigarh</a>
+                              <a href="/jobs/listing/?company=&city=Jaipur">Jobs in Jaipur</a>
+                              <a href="/jobs/listing/?company=&city=Chennai">Jobs in Chennai</a>
+                              <a href="/jobs/listing/?company=&city=Gurgaon">Jobs in Gurgaon</a>
+                             
+                            </div>
+                            <div style="display: flex; flex-direction: column;">
+                              <a href="/jobs/listing/?company=&city=Kolkata">Jobs in Kolkata</a>
+                              <a href="/jobs/listing/?company=&city=Kochi">Jobs in Kochi</a>
+                              <a href="/jobs/listing/?company=&city=Hyderabad">Jobs inHyderabad</a>
+                              <a href="/jobs/listing/?company=&city=Delhi">Jobs in Delhi</a>
+                              <a href="/jobs/listing/?company=&city=Ahmedabad">Jobs in Ahmedabad</a>
+                             
+                            </div>
+                          </div>
+
+                        </div>
+                        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
+                        <div class="tab-pane fade" id="pills-contact1" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
+                        <div class="tab-pane fade" id="pills-contact2" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
+                        <div class="tab-pane fade" id="pills-contact3" role="tabpanel" aria-labelledby="pills-contact-tab">
+                          <div style="display: flex; justify-content: space-between;" class="p-5">
+                            <div style="display: flex; flex-direction: column;">
+                              <a href="/jobs/listing/?company=Accenture&city=">Accenture Jobs</a>
+                              <a href="/jobs/listing/?company=Amazon&city=">Amazon Jobs</a>
+                              <a href="/jobs/listing/?company=AMD&city=">AMD Jobs</a>
+                              <a href="/jobs/listing/?company=AMDocs&city=">AMDocs Jobs</a>
+                              <a href="/jobs/listing/?company=Airtel&city=">Airtel Jobs</a>
+                              <a href="/jobs/listing/?company=Adobe&city=">Adobe Jobs</a>
+                              <a href="/jobs/listing/?company=Apple&city=">Apple Jobs</a>
+                              <a href="/jobs/listing/?company=Cognizant&city=">Cognizant Technologies Jobs</a>
+                              <a href="/jobs/listing/?company=Capgemini&city=">Capgemini Jobs</a>
+                              <a href="/jobs/listing/?company=DXC&city=">DXC Technology Jobs</a>
+                             
+
+                            </div>
+                            <div style="display: flex; flex-direction: column;">
+                              <a href="/jobs/listing/?company=DELL&city=">DELL Jobs</a>
+                              <a href="/jobs/listing/?company=Amazon&city=">Amazon Jobs</a>
+                              <a href="/jobs/listing/?company=AMD&city=">AMD Jobs</a>
+                              <a href="/jobs/listing/?company=AMDocs&city=">AMDocs Jobs</a>
+                              <a href="/jobs/listing/?company=Airtel&city=">Airtel Jobs</a>
+                              <a href="/jobs/listing/?company=Adobe&city=">Adobe Jobs</a>
+                              <a href="/jobs/listing/?company=Apple&city=">Apple Jobs</a>
+                              <a href="/jobs/listing/?company=Cognizant&city=">Cognizant Technologies Jobs</a>
+                              <a href="/jobs/listing/?company=Capgemini&city=">Capgemini Jobs</a>
+                              <a href="/jobs/listing/?company=DXC&city=">DXC Technology Jobs</a>
+                             
+
+                            </div>
+                            <div style="display: flex; flex-direction: column;">
+                              <a href="/jobs/listing/?company=Accenture&city=">Accenture Jobs</a>
+                              <a href="/jobs/listing/?company=Amazon&city=">Amazon Jobs</a>
+                              <a href="/jobs/listing/?company=AMD&city=">AMD Jobs</a>
+                              <a href="/jobs/listing/?company=AMDocs&city=">AMDocs Jobs</a>
+                              <a href="/jobs/listing/?company=Airtel&city=">Airtel Jobs</a>
+                              <a href="/jobs/listing/?company=Adobe&city=">Adobe Jobs</a>
+                              <a href="/jobs/listing/?company=Apple&city=">Apple Jobs</a>
+                              <a href="/jobs/listing/?company=Cognizant&city=">Cognizant Technologies Jobs</a>
+                              <a href="/jobs/listing/?company=Capgemini&city=">Capgemini Jobs</a>
+                              <a href="/jobs/listing/?company=DXC&city=">DXC Technology Jobs</a>
+                             
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                </div>
+            </div>
+           </div>
+           <div class="col-12 col-xl-3">
+               <div class="card shadow-sm">
+                   <div class="card-header p-4 text-dark" style="font-size: 18px; font-weight:600; background-color: white;">
+                       <i class="fa fa-briefcase pt-1"></i> Jobs By Top Skills
+                   </div>
+                   <div class="card-body">
+                    <div class="text-muted">
+                        <a href="/jobs/listing/?company=Accounting&city=">Accounting Jobs</a>
+                    </div>
+                    <div class="text-muted mt-2">
+                        <a href="/jobs/listing/?company=Analytics&city=">Analytics Jobs</a>
+                    </div>
+                    <div class="text-muted mt-2">
+                        <a href="/jobs/listing/?company=Animation&city=">Animation Jobs</a>
+                    </div>
+                    <div class="text-muted mt-2">
+                        <a href="/jobs/listing/?company=Architecture&city=">Architecture Jobs</a>
+                    </div>
+                    <div class="text-muted mt-2">
+                        <a href="/jobs/listing/?company=Banking&city=">Banking Jobs</a>
+                    </div>
+                    <div class="text-muted mt-2">
+                        <a href="/jobs/listing/?company=BPO&city=">BPO Jobs</a>
+                    </div>
+                    <div class="text-muted mt-2">
+                        <a href="/jobs/listing/?company=Data Science&city=">Data Science Jobs</a>
+                    </div>
+                    <div class="text-muted mt-2">
+                        <a href="/jobs/listing/?company=Graphic Design&city=">Graphic Design Jobs</a>
+                    </div>
+                    <div class="text-muted mt-2">
+                        <a href="/jobs/listing/?company=Java&city=">Java Jobs</a>
+                    </div>
+                    <div class="text-muted mt-2">
+                        <a href="/jobs/listing/?company=Marketing&city=">Marketing Jobs</a>
+                    </div>
+                    <div class="text-muted mt-2">
+                        <a href="/jobs/listing/?company=Mechanical Engineering&city=">Mechanical Engineering Jobs</a>
+                    </div>
+                    <div class="text-muted mt-2">
+                        <a href="/jobs/listing/?company=Networking&city=">Networking Jobs</a>
+                    </div>
+                    <div class="text-muted mt-2">
+                        <a href="/jobs/listing/?company=Online Marketing&city=">Online Marketing Jobs</a>
+                    </div>
+                    <div class="text-muted mt-2">
+                        <a href="/jobs/listing/?company=Python&city=">Python Jobs</a>
+                    </div>
+                    <div class="text-muted mt-2">
+                        <a href="/jobs/listing/?company=Salesforce&city=">Salesforce Jobs</a>
+                    </div>
+                    <div class="text-muted mt-2">
+                        <a href="/jobs/listing/?company=SEO&city=">SEO Jobs</a>
+                    </div>
+                    <div class="text-muted mt-2">
+                        <a href="/jobs/listing/?company=Software Engineering&city=">Software Engineering Jobs</a>
+                    </div>
+                    <div class="text-muted mt-2">
+                        <a href="/jobs/listing/?company=Software Testing&city=">Software Testing Jobs</a>
+                    </div>
+                    <div class="text-muted mt-2">
+                        <a href="/jobs/listing/?company=SQL&city=">SQL Jobs</a>
+                    </div>
+                    <div class="text-muted mt-2">
+                        <a href="/jobs/listing/?company=Teaching&city=">Teaching Jobs</a>
+                    </div>
+                    <div class="text-muted mt-2">
+                        <a href="/jobs/listing/?company=UI/UX&city=">UI/UX Jobs</a>
+                    </div>
+                    <div class="text-muted mt-2">
+                        <a href="/jobs/listing/?company=Web Developer&city=">Web Developer Jobs</a>
+                    </div>
+                    
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div> 
+</section>
+{% endblock %}
+
+{% block script %}
+<script>
+    $( ".nextBtn" ).click(function(e) {
+  goRight();
+});
+$( ".backBtn" ).click(function(e) {
+  goLeft();
+});
+
+
+function goRight(){ // inner stuff slides left
+  var initalLeftMargin = $( ".innerLiner" ).css('margin-left').replace("px", "")*1;
+  var newLeftMargin = (initalLeftMargin - 204); // extra 2 for border
+  $( ".innerLiner" ).animate({marginLeft: newLeftMargin}, 500);
+}
+function goLeft(){ // inner stuff slides right
+  var initalLeftMargin = $( ".innerLiner" ).css('margin-left').replace("px", "")*1;
+  var newLeftMargin = (initalLeftMargin + 204); // extra 2 for border
+  $( ".innerLiner" ).animate({marginLeft: newLeftMargin}, 500);
+}
+</script>
 {% endblock %}

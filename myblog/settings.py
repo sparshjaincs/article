@@ -40,6 +40,15 @@ INSTALLED_APPS = [
     'coding',
     'ckeditor',
     'crispy_forms',
+    'notes',
+    'project',
+    'compiler',
+    'authority',
+    'blog',
+    'competitive',
+    'learning',
+    'explore',
+
 ]
 
 MIDDLEWARE = [
@@ -57,7 +66,7 @@ ROOT_URLCONF = 'myblog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['authority'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -65,6 +74,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'coding.context_processors.data',
             ],
         },
     },

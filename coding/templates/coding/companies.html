@@ -1,0 +1,99 @@
+{% extends 'coding/base.html' %}
+{% load static %}
+{% block navbar %}
+{% include 'coding/header.html' %}
+{% endblock %}
+{% block style %}
+.checked {
+    color: orange;
+  }
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-12" style="margin-top: 80px;">
+            <div style="display: flex; justify-content: flex-start;">
+               
+                <div class="mr-2" style="width:50px;">
+                    <a href="{% url 'scrapper' %}">Jobs</a>
+                </div>
+                <div>
+                    <a href="#">Salaries</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 mt-2" style="height: 300px;">
+            <div class="row mt-5">
+                <div class="col-12 col-md-8 col-xl-8">
+                    <div style="">
+                        <h3 style="font-weight: 600;">Get Company Information</h3>
+                    </div>
+                    <div class="mt-5">
+                        <form method = 'POST' action="" style="display: flex; justify-content: space-between;">
+                            {% csrf_token %}
+                            <input style="width:90%; "  type="text" class="form-control bg-white border-1 mr-1" name="job" placeholder="Company Name" aria-label="Search" aria-describedby="basic-addon2" id="myinput">
+                           
+                            <button type="submit" class="btn btn-sm btn-outline-primary">Search</button>
+                              
+                        </form>
+                    </div>
+                </div>
+                <div class="col-12 col-md col-xl">
+                    <img src="{% static  'coding/svg/undraw_best_place_r685.svg' %}" style="width:100%;">
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+<section style=" min-height:350px;">
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-xl-2">
+            
+        </div>
+        <div class="col-12 col-xl-8">
+            <div class="mt-5">
+                <div style="display: flex; justify-content: flex-start;">
+                    <div >
+                            {% if data.logo.0 %}
+                            <img src="{{data.logo.1}}" style="height: 80px; width: 80px; ">
+                            {%else%}
+                            <img src=" " style="height: 80px; width: 80px;">
+                            {% endif %}
+                    </div>
+                    <div class="mt-2 ml-3">
+                        <div>
+                            <h3 style="font-weight: 600;">{{data.name}}</h3>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; " >
+                            <div style="display: flex; justify-content: flex-start; ">
+                            <h6>{{data.rating.rating}}</h6>
+                            <span class="ml-2">{{data.rating.stars|safe}}</span>
+                            <span class="ml-2">{{data.rating.addition}}</span>
+                        </div>
+                        <div style="display: flex; justify-content: flex-end; " class="ml-5">
+                            <a href="#" class="">Open Jobs</a>
+                            <a href="#" class="ml-2">Salaries</a>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <p style="font-color:#888; font-size: 13px;">
+                        {{data.rating.information|safe|linebreaks}}
+                    </p>
+                </div>
+                <div class="mt-3">
+                    <p style="font-color:#888;">
+                        {{data.information|safe|linebreaks}}
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+{% endblock %}

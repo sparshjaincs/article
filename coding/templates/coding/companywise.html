@@ -1,0 +1,32 @@
+{% extends 'coding/base.html' %}
+
+{% block navbar %}
+{% include 'coding/header.html' %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <center>
+                <h2 class="mt-5 mb-5">
+                    Company-wise Placement Preparation
+                </h2>
+            </center>
+
+        </div>
+        <div class="col-12">
+            <div>
+                <ol>
+                {% for i in name %}
+                <li>
+                    <a href="/companies/{{i}}">{{i}}</a>
+                </li>
+                {% endfor %}
+            </ol>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

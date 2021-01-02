@@ -21,6 +21,14 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("",include("coding.urls")),
+    path("notebook/",include("notes.urls")),
+    path("projects/",include("project.urls")),
+    path("compiler/",include("compiler.urls")),
+    path('superuser/',include('authority.urls')),
+    path("blogs/",include("blog.urls")),
+    path("explore/",include("explore.urls")),
+    path("learning/",include("learning.urls")),
+    path("coding/",include("competitive.urls")),
     path('logout/', auth_views.LogoutView.as_view(), name="logout"),
     path('login/', auth_views.LoginView.as_view(template_name='coding/login.html'), name="login"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

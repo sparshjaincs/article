@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html5>
 <html>
     <head>
@@ -11,36 +13,85 @@
             <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit">
 
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-            <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css">
+            <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+            {% block jscss %}
+
+            {% endblock %}
+            <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+            <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+            
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-
-            
-
+            <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+            <script src="https://cdn.datatables.net/1.10.22/js/dataTables.semanticui.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+            <script src="https://unpkg.com/scrollreveal"></script>
             <style>
-                body{
-                    font-family: Arial, Helvetica, sans-serif;
-                }
+              body{
+                font-family: 'Open Sans';
+              
+                overflow:auto;
+              }
+              ::-webkit-scrollbar {
+  width: 6px;
+  height:6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+                .navbar-nav li:hover > ul.dropdown-menu {
+    display: block;
+}
+.dropdown-submenu {
+    position:relative;
+}
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top:-6px;
+}
+
+/* rotate caret on hover */
+.dropdown-menu > li > a:hover:after {
+    text-decoration: underline;
+    transform: rotate(-90deg);
+} 
+
+                
                 {% block style %}
 
                 {% endblock %}
 
             </style>
 
-            {% block jscss %}
-
-            {% endblock %}
-
 
 
 
 
     </head>
-    <body>
+    <body style="margin-top: 55px; background-color: #FFF; ">
         {% block navbar %}
       
         {% endblock %}
+        
 
         {% block body %}
 
@@ -52,6 +103,10 @@
         {% endblock %}
 
         <script>
+          ScrollReveal().reveal('.headline');
+          $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
             function bookmarks(title,id){
       var url = '/my_article/save/?title='+title;
 
@@ -133,7 +188,7 @@
         req.send();
     }
     function like(title,id){
-      var url = '/article/like/?title='+title;
+      var url = '/article/like/'+title+'/';
 
       var req = new XMLHttpRequest(); 
       req.onreadystatechange = function(){
@@ -155,7 +210,7 @@
         req.send();
     }
     function dislike(title,id){
-      var url = '/article/dislike/?title='+title;
+      var url = '/article/dislike/'+title+'/';
 
       var req = new XMLHttpRequest(); 
       req.onreadystatechange = function(){

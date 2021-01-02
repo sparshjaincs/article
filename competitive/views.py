@@ -1,0 +1,221 @@
+from django.shortcuts import render
+from .models import *
+from coding.models import Company
+from compiler.models import Language
+from django.http import HttpResponse,HttpResponseRedirect
+import json
+from json import JSONEncoder
+from .file import Write, Test
+# Create your views here.
+class Encoder(JSONEncoder):
+        def default(self, o):
+            return o.__dict__
+def coding(request):
+    context = {}
+    
+    solved = 0
+    easy = 0
+    medium = 0
+    hard = 0
+    attempted = 0
+    ques = []
+    todo = 0
+    total = 0
+    for i in Programming.objects.all():
+        total +=1
+        ques.append(i)
+        if i.status == 'Solved':
+            solved+=1
+            if i.difficulty == 'Easy':
+                easy +=1
+            elif i.difficulty == 'Moderate':
+                medium +=1
+            else:
+                hard +=1
+        elif i.status == 'Attempted':
+            attempted +=1
+        else:
+            todo +=1
+    data = {
+        'ques' : ques,
+        'solved' : solved,
+        'Easy' : easy,
+        'Medium' : medium,
+        'Hard' : hard,
+        'Attempted' : attempted,
+        'todo' : todo,
+        'total' : total
+    }
+
+
+    context['data'] = data
+    context['category'] = Programming_Category.objects.all().order_by('category_name')
+    context['companies'] = Programming_Companies.objects.all().order_by('company_name')
+    return render(request,'competitive/coding.html',context)
+
+def inside(request,id):
+    context = {}
+    context['id'] = id
+    context['language'] = Language.objects.all()
+    solved = 0
+    easy = 0
+    medium = 0
+    hard = 0
+    attempted = 0
+    ques = []
+    todo = 0
+    total = 0
+    for i in Programming.objects.all():
+        total +=1
+        ques.append(i)
+        if i.status == 'Solved':
+            solved+=1
+            if i.difficulty == 'Easy':
+                easy +=1
+            elif i.difficulty == 'Moderate':
+                medium +=1
+            else:
+                hard +=1
+        elif i.status == 'Attempted':
+            attempted +=1
+        else:
+            todo +=1
+    data = {
+        'ques' : ques,
+        'solved' : solved,
+        'Easy' : easy,
+        'Medium' : medium,
+        'Hard' : hard,
+        'Attempted' : attempted,
+        'todo' : todo,
+        'total' : total
+    }
+
+
+    context['problem'] = data
+    context['category'] = Programming_Category.objects.all().order_by('category_name')
+    context['data'] =  Programming.objects.get(id = id)
+    return render(request,'competitive/inside.html',context)
+
+def filter(request):
+    context = {}
+    method = request.GET.get('method')
+    value = request.GET.get('value')
+    if method == 'tags':
+        instance = Programming.objects.filter(tags = Programming_Category.objects.get(category_name = value))
+  
+   
+    elif method == 'company':
+        instance = Programming.objects.filter(company = Programming_Companies.objects.get(company_name = value))
+    elif method == 'All':
+        instance = Programming.objects.all()
+    elif method == 'status':
+        instance = Programming.objects.filter(status = value)
+    elif method == 'solution':
+        instance = Programming.objects.filter(video = value)
+    elif method == 'pick':
+        instance = Programming.objects.filter(status = 'Todo').order_by('?').first().id
+        context['problem'] = instance
+        return HttpResponse(json.dumps(context))
+    listing = []
+    for i in instance:
+        d = {
+            "id":i.id,
+            "difficulty":i.difficulty,
+            "status":i.status,
+            "title":i.title,
+
+        }
+        listing.append(d)
+
+
+    
+
+        
+    
+    context['problem'] = listing
+    return HttpResponse(json.dumps(context))
+
+
+def template(request,id):
+    context = {}
+    lang = request.GET.get('lang')
+    method = request.GET.get('method')
+
+    ins = Templates.objects.get(instance = Programming.objects.get(id = id),language = Language.objects.get(lang = lang))
+    if method == 'restore':
+        context['instance'] = ins.temp
+    
+    elif ins.code:
+        context['instance'] = ins.code
+    else:
+        context['instance'] = ins.temp
+    return HttpResponse(json.dumps(context))
+
+def save(request,id):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        desc = request.POST.get('description')
+        instance = Templates.objects.get(instance = Programming.objects.get(id = id),language = Language.objects.get(lang = title))
+        instance.code = desc
+        instance.save()
+        return HttpResponse(json.dumps('Saved'))
+
+
+def runcode(request,id):
+    if request.method == 'POST':
+        program = Programming.objects.get(id = id)
+        program.status = 'Attempted'
+        program.save()
+        title = request.POST.get('title')
+        desc = request.POST.get('description')
+        test = request.POST.get('case')
+        ins = Templates.objects.get(instance = Programming.objects.get(id = id),language = Language.objects.get(lang = title))
+        
+        instance = Write()
+        instance.file_handling(title,desc,ins.snippet)
+        instance = TestCase.objects.get(instance = Programming.objects.get(id = id))
+        from pythonrun import Checker
+        ins = Checker()
+        result = ins.checking(eval(instance.public_cases),eval(instance.public_sol_cases))
+
+        return HttpResponse(json.dumps(result))
+
+
+def like(request):
+    value = request.GET.get('value')
+    instance = Programming.objects.get(id = value)
+    if request.user in instance.like.all():
+        instance.like.remove(request.user)
+        flag = False
+    else:
+        instance.like.add(request.user)
+        flag = True
+    like_count = instance.like.count()
+    return HttpResponse(json.dumps([flag,like_count]))
+
+def list(request):
+    context = {}
+    method = request.GET.get('method')
+    value  = request.GET.get('value')
+    ids = request.GET.get('ids')
+    if method == 'add':
+        
+        program = Programming.objects.get(id = value)
+        instance = Todo.objects.get(id = ids)
+        if program not in instance.question.all():
+            instance.question.add(program)
+            instance.save()
+            flag = True
+            
+        else:
+            instance.question.remove(program)
+            flag = False
+        print(flag)
+        context['information'] = [f'{instance.title}',flag]
+        return HttpResponse(json.dumps(context))
+    else:
+        ins = Todo(username = request.user,title = ids)
+        ins.save()
+        context['information'] = model_to_dict(ins)
+        return HttpResponse(json.dumps(context))

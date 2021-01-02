@@ -1,0 +1,175 @@
+{% extends 'coding/base.html' %}
+{% load shortcut %}
+{% load static %}
+{% block navbar %}
+{% include 'coding/header.html' %}
+{% endblock %}
+{% block style %}
+.jumbotron{
+    
+    margin-top:-10px;
+}
+{% endblock %}
+
+{% block body %}
+<section class="">
+    
+<div class="container">
+    <div style="position:absolute; height:50px; width:500px; background-color:#FEF6EA; transform:rotate(45deg); ">
+
+    </div>
+    <div style="position:absolute; height:50px; width:500px; background-color:#FEF6EA; transform:rotate(45deg); left:0;">
+
+    </div>
+   
+   
+    <div style="position: absolute; right:10;  z-index:-1; ">
+        <img src="{% static 'coding/svg/undraw_File_searching_re_3evy.svg'  %}" style="height:350px;">
+    </div>
+    <div class="row ">
+        <div class="col-12 mt-5">
+           
+            <div class="mt-5 ">
+                <div>
+                    <form class="form-inline" action="/jobs/listing/" method="GET">
+                        <div class="form-group mr-2" style="width:42%;">
+                        
+                          <p class="text-muted" style="font-size: 12px;">Job Title, Keywords, Companies</p>
+                          <i class="fa fa-building-o text-muted" style="font-size:20px; position: absolute; margin-top:28px; margin-left:10px;"></i>
+                          <input value="{{company}}"  type="text" placeholder="" name="company" class="form-control" id="email" style=" width:100%; height:50px; padding-left:30px;">
+                        </div>
+                        <div class="form-group mr-2" style="width:42%;">
+                          <p class="text-muted" style="font-size: 12px;">City, State, Pin Code</p>
+                          <i class="fa fa-map-marker text-muted" style="font-size:24px; position: absolute; margin-top:28px; margin-left:10px;"></i>
+                          
+                          <input value="{{city}}"type="text" class="form-control" name="city" id="pwd" style="width:100%; height:50px; padding-left:30px;">
+                        </div>
+                        
+                        <button type="submit" class=" btn btn-default btn-outline-dark" style=" margin-top:30px ;height:50px; width:110px;"><i class="fa fa-search"></i> Find Jobs</button>
+                      </form>
+                </div>
+                <div class="text-muted">
+                    Popular Keywords :  Designer, Developer, Web, IOS, Python, Senior Engineer, SDE, Android
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+<section style="background-color:#FAF9F8; margin-top:150px; padding-top:50px;">
+    <div class="container">
+        <div class="row">
+            
+            <div class="col-12 col-md-3 col-xl-3">
+                <div class="card shadow-sm">
+                    <div class="card-header p-3" style="font-size: 16px; font-weight: 600;">
+                        <i class="fa fa-search"></i> My Recent Searches
+                    </div>
+                    <div class="card-body">
+                        {% for x in recent %}
+                        <div class="mb-1">
+                            <a class="" href="/jobs/listing/?company={{x.title}}&city={{x.location}}">{{x.title}} - {{x.location}}</a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-7 col-xl-6">
+                {% for i in data%}
+                    <div >
+                        
+                    
+                    <div class="card shadow-sm mb-2 headline">
+                         
+                        <div class="card-body" style="display: flex; justify-content: flex-start;">
+                            
+                            <div >
+                            <div style="background-color:#E8E8E8; font-size: 20px; padding:12px;" class=" rounded-circle">
+                                <i class="fa fa-building-o"></i>
+                            </div>
+                        </div>
+                         
+                            <div class="ml-3">
+                            <h4 class="text-dark">{{i.title}}</h4>
+                            <a href="/jobs/companies/{{i.company.company}}/" title="See Details, Salary Trends, Reviews" data-toggle="tooltip">
+                            <p class="text-muted" style="margin-top: -10px;"><i class="fa fa-map-marker"></i> {{i.company.company}}
+                            {% if i.company.location %}
+                                <span>
+                                    , {{i.company.location}}
+                                </span>
+                            {% endif %}
+                        </a>
+                            <div style="margin-top: -10px;">
+                                 <span class="text-muted" style="margin-top: -10px; font-size: 12px;">
+                                    <i class="fa fa-clock-o"></i> {{i.date}}
+                                </span>
+                                {% if i.salary %}
+                                <span class="text-muted ml-3" style="margin-top: -10px; font-size: 12px;">
+                                    <i class="fa fa-money"></i> {{i.salary}}
+                                </span>
+                                {% endif %}
+                                <span class="text-muted ml-3" style="margin-top: -10px; font-size: 12px;">
+                                    <i class="fa fa-briefcase"></i> {{i.jobs}}
+                                </span>
+                            </div>
+                           
+                            <div class="text-muted">
+
+                            
+                            {{i.summary|safe|linebreaks}}
+                        </div>
+                        {% if i.requirement %}
+                     
+                        <div class="mt-2 text-muted">
+                            <div class="text-dark" style="font-weight: 600;">
+                                Requirements
+                            </div>
+                            {{i.requirement|safe|linebreaks}}
+                        </div>
+                        {% endif %}
+                      
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="" style="display: flex; justify-content: flex-end;">
+                            <a class="btn btn-sm  mr-1 mt-1 text-muted" data-toggle='tooltip' title="Compare With Others">
+                                <i class="fa fa-exchange"></i>
+                            </a>
+                            <a class="btn btn-sm  mr-1 mt-1 text-muted" data-toggle='tooltip' title="Save Jobs">
+                                <i class="fa fa-bookmark-o"></i>
+                            </a>
+                            <a class="btn btn-sm  mr-2  mt-1 text-muted" data-toggle='tooltip' title="Share Job Link">
+                                <i class="fa fa-share-alt"></i>
+                            </a>
+                            <a class="btn btn-sm border shadow-sm" href="{{i.link}}" style="background-color:#FEF6EA;">
+                                <i class="fa fa-pencil"></i> Apply
+                            </a>
+                        </div> 
+                    </div>
+                    </div>
+                </div>
+                {% endfor%}
+            
+            </div>
+          
+            <div class="col-12 col-md-2 col-xl-3" style="">
+                {% if recent %}
+                <div class="card shadow-sm">
+                    <div class="card-header p-3" style="font-size: 16px; font-weight: 600;">
+                        <i class="fa fa-search"></i> My Recent Searches
+                    </div>
+                    <div class="card-body">
+                        {% for x in recent %}
+                        <div class="mb-1">
+                            <a class="" href="/jobs/listing/?company={{x.title}}&city={{x.location}}">{{x.title}} - {{x.location}}</a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+               
+            </div>
+        </div>
+  
+</section>
+{% endblock %}

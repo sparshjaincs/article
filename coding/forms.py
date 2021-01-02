@@ -26,7 +26,10 @@ class CommentForm(forms.ModelForm):
 	class Meta:
 		model = my_comment
 		fields = ('name', 'email', 'body')
-
+class DiscussionCommentForm(forms.ModelForm):
+	class Meta:
+		model = Discussion_comment
+		fields = ('body',)
 class Contribute(forms.ModelForm):
     class Meta:
         model = Aptitude

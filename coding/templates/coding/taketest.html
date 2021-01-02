@@ -1,0 +1,316 @@
+{% extends 'coding/base.html' %}
+
+{% block body %}
+<div class="container-fluid" style="overflow-x:hidden ;">
+    <div class="row">
+        <div class="col-12 ">
+            <h4 class="text-muted ml-5">
+                Coding Alphas
+            </h4>
+        </div>
+
+        <div id="exam" style="width: 100%;" class="m-5">
+            
+                <div class="row">
+                   
+                    <div class="col-12 col-xl-9">
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                {% for ex in test.0.questions.all %}
+                <div >
+                    <div style="display: flex; justify-content: flex-start;">
+                    <div>
+                      <p class="mt-3 mr-1">  {{forloop.counter}}.  </p>
+                    </div>
+                    <div >
+                   
+                        <p>
+                    
+                        {{ex.question|safe}}
+                    </p>
+                    
+                </div>
+            </div>
+                <div>
+                   
+                        <p>Please select from given option:</p>
+                        <fieldset id="group{{ex.question_id}}">
+                            <input type="radio" value="A" name="group{{ex.question_id}}">
+                            {{ex.A|safe}}<br>
+                            <input type="radio" value="B" name="group{{ex.question_id}}">
+                            {{ex.B|safe}}<br>
+                            <input type="radio" value="C" name="group{{ex.question_id}}">
+                            {{ex.C|safe}}<br>
+                            <input type="radio" value="D" name="group{{ex.question_id}}">
+                            {{ex.D|safe}}<br>
+                          </fieldset>
+                   
+                </div>
+                </div>
+                <hr>
+        {% endfor %}
+                     
+                    </div>
+
+                    <div class="col-12 col-xl-3 border-left" style="">
+                        <div>
+                            <button type="submit" class="btn btn-secondary" onclick="return confirm('Are you sure you want to finish the test?')">Finish Test</button>
+                        </div>
+                    </div>
+                </form>
+              
+        </div>
+        </div>
+<div id="info">
+        <div class="col-12">
+            
+            <div class="card ml-5 mr-5 mt-5" style="border-left:4px solid #5BC0DE;">
+                <div class="card-body ">
+                    <h6>About:</h6>
+                       <p class="text-muted" style="font-size: 14px;">
+                        This is a {{test.0.instance.company}} {{test.0.title}}. This test consists of {{test.0.questions.all.count}} questions with a time limit of {{test.0.time_duration}} minutes.
+                       </p> 
+
+                        <h6>Instructions:</h6>
+                        <p class="text-muted" style="font-size: 14px;">
+                        You are able to skip a question and return to it later. Use the navigation bar to see what questions have been left unanswered and to return to them at any time you want.
+                        
+                    </p>
+                    <p class="text-muted" >
+                    When you are ready, click "Begin" to start the test.
+                </p>
+
+                </div>
+            </div>
+
+            
+        </div>
+        <div class="col-12 ml-5 mt-5 mr-5 ">
+
+            
+            </div>
+        <div class="col-12 ml-5 mt-5 mr-5">
+            <h3 class="text-muted">
+                Tips
+            </h3>
+
+            <div>
+                <div class="mb-1">
+                    <div style="display: flex; justify-content: flex-start;">
+                        <p style="border:1px solid #5BC0DE; color:#5BC0DE; height:40px; width:40px; border-radius:50%; display:flex; justify-content: center; align-items: center;">1</p>
+                        
+                        <p class="ml-2 mt-2">Be prepared</p>
+                    </div>
+                    <div class="ml-5 pr-5 " style="margin-top: -20px;">
+                        <p class="text-muted pr-5" style="font-size: 13px;">
+                            If taking your test at an assessment centre, make sure you know exactly where you’re going, and arrive early to avoid panic. If taking your test online, make sure you’ll have no interruptions, and double-check your internet connection for stability.
+
+                        </p>
+                    </div>
+                  
+                </div>
+
+                <div class="mb-1">
+                    <div style="display: flex; justify-content: flex-start;">
+                        <p style="border:1px solid #5BC0DE; color:#5BC0DE; height:40px; width:40px; border-radius:50%; display:flex; justify-content: center; align-items: center;">
+                            2</p>
+                            <p class="ml-2 mt-2">Digest the practice questions in the real test</p>
+                        
+                    </div>
+                    <div class="ml-5 pr-5 " style="margin-top: -20px;">
+                        <p class="text-muted pr-5" style="font-size: 13px;">
+                            Most numerical reasoning tests start with a couple of practice questions to get you warmed up. Study these carefully and make note of structure, content and style. They’ll give you a good indication of what’s to come and get you in the right frame of mind.
+
+                        </p>
+                    </div>
+
+                    <div class="mb-1">
+                        <div style="display: flex; justify-content: flex-start;">
+                            <p style="border:1px solid #5BC0DE; color:#5BC0DE; height:40px; width:40px; border-radius:50%; display:flex; justify-content: center; align-items: center;">
+                                3</p>
+                                <p class="ml-2 mt-2">Pay close attention to detail
+                                     </p>
+                            
+                        </div>
+                        <div class="ml-5 pr-5 " style="margin-top: -20px;">
+                            <p class="text-muted pr-5" style="font-size: 13px;">
+                                The easiest way to slip up on your test is to misinterpret the question. You may be working against the clock but don’t let that stop you from taking the time to understand what is being asked. Read each question carefully to avoid silly mistakes.
+                                   
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-1">
+                        <div style="display: flex; justify-content: flex-start;">
+                            <p style="border:1px solid #5BC0DE; color:#5BC0DE; height:40px; width:40px; border-radius:50%; display:flex; justify-content: center; align-items: center;">
+                                4</p>
+                                <p class="ml-2 mt-2">Work with what you've been given
+                                     </p>
+                            
+                        </div>
+                        <div class="ml-5 pr-5 " style="margin-top: -20px;">
+                            <p class="text-muted pr-5" style="font-size: 13px;">
+                                Each question will include all the information you need to draw the right conclusion, so don’t make assumptions about the data. Just work with what’s in front of you.
+                                
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mb-1">
+                        <div style="display: flex; justify-content: flex-start;">
+                            <p style="border:1px solid #5BC0DE; color:#5BC0DE; height:40px; width:40px; border-radius:50%; display:flex; justify-content: center; align-items: center;">
+                                5</p>
+                                <p class="ml-2 mt-2">    
+                                    Don't dwell on difficult questions
+                                      </p>
+                            
+                        </div>
+                        <div class="ml-5 pr-5 " style="margin-top: -20px;">
+                            <p class="text-muted pr-5" style="font-size: 13px;">
+                                Remember, you’re working on a time limit, so if you find yourself stuck, move on. Often, the more you struggle with a complex problem, the more confused you become. You can always come back for another go if you have time to spare at the end.
+                                    
+                               
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mb-1">
+                        <div style="display: flex; justify-content: flex-start;">
+                            <p style="border:1px solid #5BC0DE; color:#5BC0DE; height:40px; width:40px; border-radius:50%; display:flex; justify-content: center; align-items: center;">
+                                6</p>
+                                <p class="ml-2 mt-2"> Take an educated guess
+                                     </p>
+                            
+                        </div>
+                        <div class="ml-5 pr-5 " style="margin-top: -20px;">
+                            <p class="text-muted pr-5" style="font-size: 13px;">
+                                Where you are unsure of the answer, use a process of elimination to narrow down your options. An unanswered question will score you nothing. An educated guess may well prove correct.
+                                    
+                                
+                            </p>
+                        </div>
+
+                        <div class="mb-1">
+                            <div style="display: flex; justify-content: flex-start;">
+                                <p style="border:1px solid #5BC0DE; color:#5BC0DE; height:40px; width:40px; border-radius:50%; display:flex; justify-content: center; align-items: center;">
+                                    7</p>
+                                    <p class="ml-2 mt-2">         Beware of red herrings
+                                      
+                                         </p>
+                                
+                            </div>
+                            <div class="ml-5 pr-5 " style="margin-top: -20px;">
+                                <p class="text-muted pr-5" style="font-size: 13px;">
+                                    As mentioned, multiple-choice options in numerical reasoning tests can often include distractors, and questions can include irrelevant information designed to put you off track. Keep your wits about you, double-check your answers for accuracy, and focus only on the information you need.
+                                        
+                                    
+                                    
+                                </p>
+                            </div>
+                            <div class="mb-1">
+                                <div style="display: flex; justify-content: flex-start;">
+                                    <p style="border:1px solid #5BC0DE; color:#5BC0DE; height:40px; width:40px; border-radius:50%; display:flex; justify-content: center; align-items: center;">
+                                        8</p>
+                                        <p class="ml-2 mt-2">  Double-check what you're working with
+                                            
+                                             </p>
+                                    
+                                </div>
+                                <div class="ml-5 pr-5 " style="margin-top: -20px;">
+                                    <p class="text-muted pr-5" style="font-size: 13px;">
+                                        Some questions may require you to work with varying units of measurement, multiple currencies, or different number representations. Make sure you’re using the right information in the right way to draw your conclusions.
+                                       
+                                        
+                                    </p>
+                                </div>
+                                <div class="mb-1">
+                                    <div style="display: flex; justify-content: flex-start;">
+                                        <p style="border:1px solid #5BC0DE; color:#5BC0DE; height:40px; width:40px; border-radius:50%; display:flex; justify-content: center; align-items: center;">
+                                            9</p>
+                                            <p class="ml-2 mt-2">     
+                                                Pace yourself
+                                                    
+                                                 </p>
+                                        
+                                    </div>
+                                    <div class="ml-5 pr-5 " style="margin-top: -20px;">
+                                        <p class="text-muted pr-5" style="font-size: 13px;">
+                                            Although it’s important not to let it become a distraction, you need to be aware of timing. As a rule of thumb, one question every minute is a steady pace, though some tests will allow more, and some less. Practice is essential here, so be sure to include pacing as part of your test preparation.
+                                                
+                                              
+                                            
+                                        </p>
+                                    </div>
+                                    <div class="mb-1">
+                                        <div style="display: flex; justify-content: flex-start;">
+                                            <p style="border:1px solid #5BC0DE; color:#5BC0DE; height:40px; width:40px; border-radius:50%; display:flex; justify-content: center; align-items: center;">
+                                                10</p>
+                                                <p class="ml-2 mt-2">   Stay calm and focused
+                                                   
+                                                     </p>
+                                            
+                                        </div>
+                                        <div class="ml-5 pr-5 " style="margin-top: -20px;">
+                                            <p class="text-muted pr-5" style="font-size: 13px;">
+                                                Numerical reasoning tests require fixed concentration, so shut yourself off from whatever surrounds you. Though it’s easier said than done for some, try not to let the pressure get to you, and keep a cool head that’s zoned in on the task at hand.
+                                                         
+                                                
+                                            </p>
+                                        </div>
+                    
+                    </div>
+                </div>
+                <div class="col-12">
+                    <center>
+                    <button class="btn btn-warning" onclick="openFullscreen();">
+                        Begin
+                    </button>
+                </center>
+                </div>
+            </div>
+          
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    window.onload = function(){
+        //document.getElementById('exam').style.display = 'none';
+    }
+   var elem = document.documentElement;
+function openFullscreen() {
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) { /* Safari */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { /* IE11 */
+    elem.msRequestFullscreen();
+  }
+
+  document.getElementById('info').style.display = 'none';
+  document.getElementById('exam').style.display = 'block';
+}
+
+</script>
+
+<script>
+    $("input:checkbox").on('click', function() {
+  // in the handler, 'this' refers to the box clicked on
+  var $box = $(this);
+  if ($box.is(":checked")) {
+    // the name of the box is retrieved using the .attr() method
+    // as it is assumed and expected to be immutable
+    var group = "input:checkbox[name='" + $box.attr("name") + "']";
+    // the checked state of the group/box on the other hand will change
+    // and the current value is retrieved using .prop() method
+    $(group).prop("checked", false);
+    $box.prop("checked", true);
+  } else {
+    $box.prop("checked", false);
+  }
+});
+</script>
+{% endblock %}

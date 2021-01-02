@@ -1,0 +1,67 @@
+{% extends 'coding/base.html' %}
+{% load crispy_forms_tags %}
+{% block navbar %}
+{% include 'coding/header.html' %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+       
+        <div class="col-12 mt-3">
+
+            
+            <div class="row">
+                <div class="col-12 mb-3">
+                    <h3 class="text-muted">
+                        Mock Test Series
+                    </h3>
+                </div>
+                {% for data in mock_data %}
+                   <div class="col-12 col-md-6 col-xl-3 mb-4">
+                                    <!-- Card -->
+                                <div class="card promoting-card shadow-sm border-0" style="background-color: #FDFDFD; height:300px; border-radius: 15px;">
+
+                                
+                                    <!-- Card image -->
+                                    <div class="view overlay">
+                                        <span class="badge badge-warning rounded-pill" style="position: absolute; display: flex; margin-top: 10px; margin-left:10px ;">Premium</span>
+                                    <img class="card-img-top " style="border-top-left-radius:15px ; border-top-right-radius:15px ;" src="https://mdbootstrap.com/img/Photos/Horizontal/Food/full page/2.jpg" alt="Card image cap">
+                                    <a href="#!">
+                                        <div class="mask rgba-white-slight"></div>
+                                    </a>
+                                    </div>
+                                
+                                    <!-- Card content -->
+                                    <div class="card-body">
+                                       
+                                        <a href="/mock_test/{{data.id}}/" class="shadow" style=" margin-top:-44px; text-decoration: none; margin-left:170px;  position: absolute; background-color: white; font-size: 22px; border-radius: 50%; width:50px;height:50px; display: flex; justify-content: center; align-items: center;">
+                                            <i class="ml-1 fa fa-play"></i></a>
+                                    <div class="">
+                                
+                                        <!-- Text -->
+                                        <p class="card-text text-muted " style="font-size: 20px;" id="collapseContent">{{data.title}}</p>
+                                        <!-- Button -->
+                                        <div style="display: flex; justify-content: space-between;">
+                                            <p class="text-muted" style="font-size: 12px; margin-top: -15px;">
+                                                {{data.mock_name.all.count}} Test Series
+                                            </p>
+                                       
+                                    </div>
+                                        
+                                
+                                    </div>
+                                
+                                    </div>
+                                
+                                </div>
+                                <!-- Card -->
+                       </div>
+                {% endfor %}
+            </div>
+        </div>
+
+     
+    </div>
+</div>
+{% endblock %}

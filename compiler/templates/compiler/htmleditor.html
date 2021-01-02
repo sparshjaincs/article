@@ -1,0 +1,113 @@
+{% extends 'coding/base.html' %}
+
+{% block navbar %}
+{% include 'coding/header.html' %}
+{% endblock %}
+{% block style %}
+textarea{
+    width:100%;
+    height:584px;
+    padding-top:1px;
+    resize:none;
+    outline: none;
+    border:none;
+}
+textarea:focus, input:focus{
+    outline: none;
+}
+#DivContent{
+    width:100%;
+    height:714px;
+    overflow-y:scroll;
+    padding-top:4px;
+    
+}
+.nav1{
+    bo
+}
+.nav .active{
+    border-bottom:3px solid #C42D63;
+    background-color:white;
+    
+}
+{%endblock %}
+{% block body %}
+<section style=" margin-top: -10px;">
+   <div class="container-fluid" style="">
+       <div class="row">
+           <div class="mt-2 col-12 col-xl-6 p-0">
+            <div class="pb-2 pt-2 border-bottom" style="width:100%;display: flex; justify-content: space-between;">
+                <div style="display: flex; flex-direction: row;">
+                    <button type="" onclick="submit();" class="btn btn-sm rounded-pill shadow-sm pl-3 pr-3 ml-3" style="background-color: #C42D63; color:white;">
+                       <i class="fa fa-play"></i>  Run Code
+                    </button>
+                    <div style="display: flex; flex-direction: row;">
+                        <input class="form-control ml-2" name="file_name" value="{{file_name}}" id="inp" disabled='true' onchange="savefile();"><span>
+                            <button class="btn mt-1 btn-default" onclick="remove(); "><i class="fa fa-pencil"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <div style=" display: flex; flex-direction: row;">
+                        
+                    <div id="savestatus" class="mt-1">
+
+                    </div>
+                    <button onclick="save();" class="btn btn-sm rounded-pill shadow-sm pl-3 pr-3" style="background-color: #C42D63; color:white;">
+                        <i class="fa fa-save"></i>  Save
+                     </button>
+                     
+                    
+                
+                     <a class="btn btn-sm btn-default pl-2  pr-2 ml-2 mr-2" style="display:flex; justify-content: center; align-items: center; width:40px; ">
+                        <i class="fa fa-cog "></i> 
+                     </a>
+                
+                     
+
+                </div>
+
+            </div>
+            <div>
+                <nav>
+                    <div class="nav border-bottom shadow-sm" id="nav-tab" role="tablist">
+                      <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">HTML</a>
+                      <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">CSS</a>
+                      <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Javascript</a>
+                    </div>
+                  </nav>
+                  <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+
+                        <textarea>
+
+                        </textarea>
+                    </div>
+                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                        <textarea>
+                            
+                        </textarea>
+                    </div>
+                    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                        <textarea>
+                            
+                        </textarea>
+                    </div>
+                  </div>
+            </div>
+           </div>
+           <div class="col-12 col-xl-6 border-left shadow-sm" style="background-color: white;">
+            <div id="DivContent"></div>
+        </div>
+       </div>
+   </div>
+   
+</section>
+{% endblock %}
+
+{% block script%}
+<script>
+    $(function(){
+     $("#DivContent").load("/compiler/playground/frontend/html/"); 
+   });
+</script>
+{% endblock %}

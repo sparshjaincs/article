@@ -1,0 +1,129 @@
+{% extends 'coding/base.html' %}
+{% load crispy_forms_tags %}
+{% block navbar %}
+{% include 'coding/header.html' %}
+{% endblock %}
+{% block style %}
+#footer {
+    position:fixed;
+    right:0;
+    bottom:0;
+    margin-bottom:50px;
+    margin-right:60px;
+}
+{% for data in user.notebook.all %}
+#content{{data.id}}{
+    border: 1px solid red;
+    height: 1em;
+    padding: 2px;
+    overflow: hidden ;
+}
+{% endfor %}
+
+{% endblock %}
+{% block body %}
+<div id="footer">
+    <button type="button" class="btn shadow" style="font-size: 20px;height:50px; width:50px; border-radius:50%;background-color: #C42D63;  " data-toggle="modal" data-target=".bd-example-modal-lg">
+        <i class="fa fa-plus "></i>
+    </button>
+
+   
+   
+</div>
+<div class="container">
+    <div id="myModal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            
+              <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+
+                  <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{form|crispy}}
+
+                    {{form.media}}
+                    <button type="submit" class="btn" style="background-color: #C42D63;">
+                        Save
+                    </button>
+                  </form>
+              </div>
+          </div>
+        </div>
+      </div>
+    <div class="row">
+        <div class="col-12">
+            <div>
+                <p class="text-muted mt-3" style="font-size: 25px;">
+                    <a href="{% url 'notebook' %}" style="text-decoration: none; " class="text-muted">
+                    <i style="color:#C42D63; font-size: 30px;" class="fa fa-sticky-note-o" aria-hidden="true"></i> My Notes
+                </a>
+                </p>
+            </div>
+
+
+        </div>
+        <div class="col-12">
+            <div class="row">
+                {% if user.notebookuser.all.count == 0 %}
+
+                <div style="display: flex; justify-content: center; width:100%; align-items: center; height:500px; flex-direction: column;">
+                    <p class="text-muted">You have no notes here.</p>
+                  
+                    <p class="text-muted" style="margin-top: -10px;">Take notes by clicking on the "+" Button on the bottom right of your screen. </p>
+                </div>
+                {% else %}
+            {% for data in user.notebookuser.all %}
+                <div class="card mt-2" style="width: 100%; border-left:4px solid #C42D63">
+                    <div class="card-body">
+                        <div style="display: flex; justify-content: flex-end;">
+                            <a class="mr-2" href="/notebook/delete/{{data.id}}/"><i class="fa fa-trash"></i></a>
+                            <a class="mr-2" href="/notebook/edit/{{data.id}}/"><i class="fa fa-edit "></i></a>
+                            <a><i class="fa fa-print"></i></a>
+                        </div>
+                       <h5 class="text-muted">{{data.heading}}</h5> 
+                       <p class="text-muted" style="font-size: 10px; margin-top: -5px;">
+                           {{data.created}}
+                       </p>
+                       <div class="classcontent">
+
+                       
+                       <p id="content{{data.id}}"  style="font-size: 12px; "class="text-muted">{{data.text|safe}}</p>
+
+                    </div>
+                    </div>
+                </div>
+                
+
+                
+            {% endfor %}
+            {% endif %}
+        </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block script %}
+{% if edit %}
+
+    <script type="text/javascript">
+    $(window).on('load',function(){
+        $('#myModal').modal('show');
+    });
+</script>
+
+{% endif %}
+
+<script>
+    {% for data in user.notebook.all %}
+    document.getElementById("content{{data.id}}").onclick = function() {
+    this.style.height = 'auto';
+    }
+
+    {% endfor %}
+</script>
+{% endblock %}
